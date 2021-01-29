@@ -1,0 +1,6 @@
+com\xul\self\protocol\privated\NettyMessageEncoder.class
+com\xul\self\protocol\privated\Header.class
+com\xul\self\HttpFileServerHandler.class
+com\xul\self\protocol\privated\NettyMessage.class
+com\xul\self\HttpFileServer$1.class
+com\xul\self\HttpFileServer.class
