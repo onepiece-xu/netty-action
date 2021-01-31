@@ -3,4 +3,6 @@ logs/
 ./logs/
 
 .vs/
-.idea/ workspace.xml
+.idea/*.xml
+
+*.iml

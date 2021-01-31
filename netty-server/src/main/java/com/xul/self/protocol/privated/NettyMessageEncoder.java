@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class NettyMessageEncoder extends MessageToMessageEncoder<NettyMessage> {
 
-    private MarshallingEncoder marshallingEncoder;
+    private NettyMarshallingEncoder marshallingEncoder;
 
     public NettyMessageEncoder() throws IOException {
         this.marshallingEncoder = MarshallingCodeCFactory.buildMarshallingEncoder();
