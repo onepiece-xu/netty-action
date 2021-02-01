@@ -12,7 +12,7 @@ public class LoginAuthReqHandler extends ChannelHandlerAdapter{
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		NettyMessage nettyMsg = buildLoginReq();
 		System.out.println("client send login auth request to server:"+nettyMsg);
-		ctx.writeAndFlush(buildLoginReq());
+		ctx.writeAndFlush(nettyMsg);
 	}
 
 	public void channelRead(ChannelHandlerContext ctx, Object msg)

@@ -20,6 +20,7 @@ public class LoginAuthReqHandler extends ChannelHandlerAdapter {
         Header header = new Header();
         header.setType(Header.MessageType.LOGIN_REQ.code);
         message.setHeader(header);
+        message.setBody("It is request");
         return message;
     }
 
@@ -27,7 +28,7 @@ public class LoginAuthReqHandler extends ChannelHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         NettyMessage message = (NettyMessage) msg;
         if (message.getHeader() != null &&
-                message.getHeader().getType() == Header.MessageType.HEARTBEAT_RESP.code) {
+                message.getHeader().getType() == Header.MessageType.LOGIN_RESP.code) {
             byte body = (Byte)message.getBody();
             if (body == -1) {
                 ctx.close();

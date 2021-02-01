@@ -21,7 +21,7 @@ public class LoginAuthRespHandler extends ChannelHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         NettyMessage message = (NettyMessage) msg;
         if (message.getHeader() != null
-                && message.getHeader().getType() == Header.MessageType.HEARTBEAT_RESP.code) {
+                && message.getHeader().getType() == Header.MessageType.LOGIN_REQ.code) {
             String nodeIndex = ctx.channel().remoteAddress().toString();
             NettyMessage loginResp = null;
             if (nodeCheck.containsKey(nodeIndex)) {
@@ -53,7 +53,7 @@ public class LoginAuthRespHandler extends ChannelHandlerAdapter {
     private NettyMessage buildResponse(byte result) {
         NettyMessage message = new NettyMessage();
         Header header = new Header();
-        header.setType(Header.MessageType.HEARTBEAT_RESP.code);
+        header.setType(Header.MessageType.LOGIN_RESP.code);
         message.setHeader(header);
         message.setBody(result);
         return message;
