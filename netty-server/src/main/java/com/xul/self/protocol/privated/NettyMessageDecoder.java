@@ -16,6 +16,11 @@ public class NettyMessageDecoder extends LengthFieldBasedFrameDecoder {
         nettyMarshallingDecoder = MarshallingCodeCFactory.buildMarshallingDecoder();
     }
 
+    public NettyMessageDecoder(int maxFrameLength, int lengthFieldOffset, int lengthFieldLength, int lengthAdjustment, int initialBytesToStrip) {
+        super(maxFrameLength, lengthFieldOffset, lengthFieldLength, lengthAdjustment, initialBytesToStrip);
+        nettyMarshallingDecoder = MarshallingCodeCFactory.buildMarshallingDecoder();
+    }
+
     @Override
     protected Object decode(ChannelHandlerContext ctx, ByteBuf in) throws Exception {
         ByteBuf buf = (ByteBuf)super.decode(ctx, in);

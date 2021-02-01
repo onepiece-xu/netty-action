@@ -62,8 +62,11 @@ public final class NettyMessageEncoder extends MessageToMessageEncoder<NettyMess
         value = null;
         if (msg.getBody() != null) {
             marshallingEncoder.encode(ctx, msg.getBody(), sendBuf);
-        } else
+        } else{
             sendBuf.writeInt(0);
+        }
         sendBuf.setInt(4, sendBuf.readableBytes());
+        // 把Message添加到List传递到下一个Handler
+        out.add(sendBuf);
     }
 }

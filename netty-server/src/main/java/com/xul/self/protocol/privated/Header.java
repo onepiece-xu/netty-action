@@ -75,4 +75,16 @@ public final class Header {
                 ", attachment=" + attachment +
                 '}';
     }
+
+    public enum MessageType{
+        RES((byte)0),RESP((byte)1),ONEWAY((byte)2),
+        LOGIN_REQ((byte)3),LOGIN_RESP((byte)4),
+        HEARTBEAT_REQ((byte)5),HEARTBEAT_RESP((byte)6);
+
+        public byte code;
+
+        MessageType(byte code){
+            this.code = code;
+        }
+    }
 }
