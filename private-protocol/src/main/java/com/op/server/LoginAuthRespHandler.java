@@ -49,12 +49,11 @@ public class LoginAuthRespHandler extends ChannelHandlerAdapter {
             System.out.println("The login response is " + loginResp + " body [" +
                     loginResp.getBody() + "]");
             ctx.writeAndFlush(loginResp);
-        } else {
-            if (nodeCheck.containsKey(nodeIndex)) {
-                loginResp = buildResponse((byte) -1);
-                ctx.writeAndFlush(loginResp);
-                ctx.close();
-            }
+        } else if (!nodeCheck.containsKey(nodeIndex)) {
+            loginResp = buildResponse((byte) -1);
+            ctx.writeAndFlush(loginResp);
+            ctx.close();
+        } else{
             ctx.fireChannelRead(msg);
         }
     }

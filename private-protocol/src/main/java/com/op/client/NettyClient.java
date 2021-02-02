@@ -66,6 +66,11 @@ public class NettyClient {
         }
     }
 
+    public void close (ChannelFuture future) throws InterruptedException {
+        future.channel().closeFuture().sync();
+        System.out.println("client close");
+    }
+
     public static void main(String[] args) throws Exception {
         new NettyClient().connect("127.0.0.1", 8000);
     }
