@@ -22,10 +22,12 @@ public class LoginAuthRespHandler extends ChannelHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         NettyMessage message = (NettyMessage) msg;
-        if (message.getHeader() != null
-                && message.getHeader().getType() == NettyHeader.MessageType.LOGIN_REQ.code) {
-            String nodeIndex = ctx.channel().remoteAddress().toString();
-            NettyMessage loginResp = null;
+        if (message == null || message.getHeader() == null){
+            ctx.close();
+        }
+        String nodeIndex = ctx.channel().remoteAddress().toString();
+        NettyMessage loginResp = null;
+        if (message.getHeader().getType() == NettyHeader.MessageType.LOGIN_REQ.code) {
             if (nodeCheck.containsKey(nodeIndex)) {
                 loginResp = buildResponse((byte) -1);
             } else {
@@ -48,6 +50,11 @@ public class LoginAuthRespHandler extends ChannelHandlerAdapter {
                     loginResp.getBody() + "]");
             ctx.writeAndFlush(loginResp);
         } else {
+            if (nodeCheck.containsKey(nodeIndex)) {
+                loginResp = buildResponse((byte) -1);
+                ctx.writeAndFlush(loginResp);
+                ctx.close();
+            }
             ctx.fireChannelRead(msg);
         }
     }
