@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class LoginAuthRespHandler extends ChannelHandlerAdapter {
 
     private Map<String, Boolean> nodeCheck = new ConcurrentHashMap<String, Boolean>();
-    private String[] whitekList = {"127.0.0.2"};
+    private String[] whitekList = {"127.0.0.1"};
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
