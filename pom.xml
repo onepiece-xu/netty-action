@@ -12,6 +12,7 @@
         <module>native-nio</module>
         <module>private-protocol</module>
         <module>private-protocol-plus</module>
+        <module>http-protocol</module>
     </modules>
 
     <dependencyManagement>

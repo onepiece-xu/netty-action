@@ -32,7 +32,7 @@ public class Test {
             set.add(a);
         }
         System.out.println("set size : " + set.size());
-        System.out.println(set);
+//        System.out.println(set);
     }
 
     /**
