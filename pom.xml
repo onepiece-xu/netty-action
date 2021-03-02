@@ -13,6 +13,7 @@
         <module>private-protocol</module>
         <module>private-protocol-plus</module>
         <module>http-protocol</module>
+        <module>ydw-protocol</module>
     </modules>
 
     <dependencyManagement>

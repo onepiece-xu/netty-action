@@ -32,7 +32,7 @@ public class NettyServer {
                     pipeline.addLast(new NettyMessageEncoder());
                     pipeline.addLast(new ReadTimeoutHandler(50));
                     pipeline.addLast(new LoginAuthRespHandler());
-                    pipeline .addLast(new HeartBeatRespHandler());
+                    pipeline.addLast(new HeartBeatRespHandler());
                 }
             });
             System.out.println("server start!");
