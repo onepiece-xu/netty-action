@@ -25,6 +25,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
+import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.stream.ChunkedWriteHandler;
 
 /**
@@ -48,11 +49,9 @@ public class HttpFileServer {
                         protected void initChannel(SocketChannel ch)
                                 throws Exception {
                             ch.pipeline().addLast("http-decoder",
-                                    new HttpRequestDecoder());
+                                    new HttpServerCodec());
                             ch.pipeline().addLast("http-aggregator",
                                     new HttpObjectAggregator(65536));
-                            ch.pipeline().addLast("http-encoder",
-                                    new HttpResponseEncoder());
                             ch.pipeline().addLast("http-chunked",
                                     new ChunkedWriteHandler());
                             ch.pipeline().addLast("fileServerHandler",

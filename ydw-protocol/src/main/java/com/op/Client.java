@@ -96,9 +96,9 @@ public class Client {
 //        list.add(new ConnectVO("192.168.104.46", 8556,"6723432241504311212"));
 
         list.add(new ConnectVO("116.163.30.22", 8556,"6770281333287352650"));
-        list.add(new ConnectVO("101.205.173.77", 8556,"6770280404274182472"));
-        list.add(new ConnectVO("1.180.74.220", 8556,"6770279011484236102"));
-        for (int i = 0 ; i < 10000 ; i ++){
+//        list.add(new ConnectVO("101.205.173.77", 8556,"6770280404274182472"));
+//        list.add(new ConnectVO("1.180.74.220", 8556,"6770279011484236102"));
+        for (int i = 0 ; i < 1 ; i ++){
             ConnectVO connectVO = list.get(i % 3);
             client.connect(connectVO.ip, connectVO.port,connectVO.id);
         }
@@ -114,7 +114,7 @@ public class Client {
 //        client.connect("192.168.105.50", 8556,"6723432240875165606");
         int i = client.atomicInteger.get();
         System.out.println(i);
-        Thread.sleep(100000);
+        Thread.sleep(10000);
         client.group.shutdownGracefully();
         System.out.println("end");
     }

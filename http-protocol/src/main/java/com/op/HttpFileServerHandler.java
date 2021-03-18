@@ -69,6 +69,7 @@ public class HttpFileServerHandler extends
 
     public HttpFileServerHandler(String url) {
         this.url = url;
+        System.out.println("init");
     }
 
 
