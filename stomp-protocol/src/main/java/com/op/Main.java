@@ -19,6 +19,7 @@ import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import io.netty.util.concurrent.EventExecutorGroup;
 import lombok.extern.slf4j.Slf4j;
+
 import javax.net.ssl.*;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -37,12 +38,7 @@ public class Main {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        if (args.length != 1) {
-            log.debug("Args must have port");
-            return;
-        }
-        int port = Integer.parseInt(args[0]);
-        new Main(port).start();
+        new Main(8899).start();
     }
 
     private void start() throws InterruptedException {
@@ -93,8 +89,8 @@ public class Main {
                             }
                             ch.pipeline().addLast(new HttpServerCodec());
                             ch.pipeline().addLast(new HttpObjectAggregator(64 * 1024));
-                            ch.pipeline().addLast(new HttpRequestHandler("/uawSrv", serverRuntime));
-                            ch.pipeline().addLast(new WebSocketServerProtocolHandler("/uawSrv", null, false, 10 * 1024 * 1024, false, true, 10000L));
+                            ch.pipeline().addLast(new HttpRequestHandler("/ws", serverRuntime));
+                            ch.pipeline().addLast(new WebSocketServerProtocolHandler("/ws", null, false, 10 * 1024 * 1024, false, true, 10000L));
                             ch.pipeline().addLast("sockjsDecoder", new SockJsDecoder());
                             ch.pipeline().addLast(new SockJsEncoder());
                             ch.pipeline().addLast(new StompSubframeDecoder());

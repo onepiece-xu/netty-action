@@ -1,12 +1,12 @@
 package com.op.handler;
 
+import com.op.server.ServerRuntime;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
-import ru.server.ServerRuntime;
 
 @Slf4j
 public class StompHeartBeatHandler extends ChannelDuplexHandler {

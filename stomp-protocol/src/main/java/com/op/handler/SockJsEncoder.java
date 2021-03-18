@@ -42,7 +42,7 @@ public class SockJsEncoder extends ChannelOutboundHandlerAdapter {
             if (isSockJsSpecialChar(c)) {
                 result.append('\\').append('u');
                 String hex = Integer.toHexString(c).toLowerCase();
-                result.append("0".repeat(Math.max(0, (4 - hex.length()))));
+//                result.append("0".repeat(Math.max(0, (4 - hex.length()))));
                 result.append(hex);
             }
             else {
