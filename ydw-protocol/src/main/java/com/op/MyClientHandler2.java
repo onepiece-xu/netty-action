@@ -20,35 +20,35 @@ public class MyClientHandler2 extends ChannelInboundHandlerAdapter {
         this.deviceId = deviceId;
     }
 
-//    @Override
-//    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-//        System.out.println(ctx.channel().remoteAddress()+ " handlerAdded");
-//    }
-//
-//    @Override
-//    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-//        System.out.println(ctx.channel().remoteAddress()+ " handlerRemoved");
-//    }
-//
-//    @Override
-//    public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
-//        System.out.println(ctx.channel().remoteAddress()+ " channelRegistered");
-//    }
-//
-//    @Override
-//    public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
-//        System.out.println(ctx.channel().remoteAddress()+ " channelUnregistered");
-//    }
-//
-//    @Override
-//    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-//        System.out.println(ctx.channel().remoteAddress()+ " channelInactive");
-//    }
-//
-//    @Override
-//    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-//        System.out.println(ctx.channel().remoteAddress()+ " exceptionCaught");
-//    }
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+        System.out.println(ctx.channel().remoteAddress()+ " handlerAdded");
+    }
+
+    @Override
+    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+        System.out.println(ctx.channel().remoteAddress()+ " handlerRemoved");
+    }
+
+    @Override
+    public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
+        System.out.println(ctx.channel().remoteAddress()+ " channelRegistered");
+    }
+
+    @Override
+    public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
+        System.out.println(ctx.channel().remoteAddress()+ " channelUnregistered");
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println(ctx.channel().remoteAddress()+ " channelInactive");
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        System.out.println(ctx.channel().remoteAddress()+ " exceptionCaught");
+    }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {

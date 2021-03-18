@@ -124,7 +124,7 @@ public class Client {
 //        client.connect("192.168.105.50", 8556,"6723432240875165606");
         int i = client.atomicInteger.get();
         System.out.println(i);
-        Thread.sleep(100000);
+        Thread.sleep(10000);
         client.group.shutdownGracefully();
         System.out.println("end");
     }
