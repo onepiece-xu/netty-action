@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>webSocket</title>
+    <script src="http://cdn.bootcss.com/sockjs-client/1.1.1/sockjs.min.js"></script>  
+    <script src="http://cdn.bootcss.com/stomp.js/2.3.3/stomp.js"></script>  
+    <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<body>
+    <a href="http://files.yidianwan.cn/ydw.apk" download="ydw.apk">点击下载</a>
+    <div>
+        <button id="connect">连接</button>
+        <button id="disconnect" disabled="disabled">断开</button>
+    </div>
+    <div>
+        <h3>广播形式</h3>
+        <button id="broadcastButton">发送</button><input id="broadcastText" type="text">
+        <label>广播消息：</label><input id="broadcastMsg" type="text" disabled="disabled">
+    </div>
+    <div>
+        <h3>订阅形式</h3>
+        <label>订阅消息：</label><input id="subscribeMsg" type="text" disabled="disabled">
+    </div>
+    <div>
+        <h3>角色形式</h3>
+        <button id="userButton">发送</button><input id="userText" type="text">
+        <label>用户消息：</label><input id="userMsg" type="text" disabled="disabled">
+    </div>
+    <div>
+        <h3>无APP</h3>
+        <button id="appButton">发送</button><input id="appText" type="text">
+        <label>前端消息：</label><input id="appMsg" type="text" disabled="disabled">
+    </div>
+</body>
+<script>
+    var stomp = null;
+    var header = {
+            "Authorization":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInRpbWUiOjE2MTA5NjA5NTY1MjksImFjY291bnQiOiI2NzIyMTAxNDExOTk5ODIyNjI5In0.izcCSfKK1DbCIfk6uU3gN1iq8U4IHQZkRv1QMBFFnA0"
+        };
+    var socketUrl = "ws://127.0.0.1:8899/ws";
+    $("#connect").click(function () {
+        // var url = "http://localhost:9083/cgp-saas-game/ws"
+        // var socket = new SockJS(url);
+        // var socket = new WebSocket("ws://localhost:9083/cgp-saas-game/game/websocket");
+        // stomp = Stomp.over(socket);
+        // stomp = Stomp.client(socketUrl)
+        // //连接
+        // stomp.connect(header, function (frame) {
+        //     //订阅广播
+        //     stomp.subscribe("/user/charge", function (res) {
+        //         $("#broadcastMsg").val(res.body);
+        //     });
+        //     // //订阅，一般只有订阅的时候在返回
+        //     // stomp.subscribe("/app/connect", function (res) {
+        //     //     $("#subscribeMsg").val(res.body);
+        //     // });
+        //     // //用户模式
+        //     stomp.subscribe("/user/connect", function (res) {
+        //         $("#userMsg").val(res.body);
+        //     });
+        //     stomp.subscribe("/user/mail", function (res) {
+        //         $("#userMsg").val(res.body);
+        //     });
+        //      stomp.subscribe("/user/login", function (res) {
+        //         $("#userMsg").val(res.body);
+        //     });
+        //     // //无APP
+        //     // stomp.subscribe("/queue/connect", function (res) {
+        //     //     $("#appMsg").val(res.body);
+        //     // });
+        //     // stomp.subscribe("/connect", function (res) {
+        //     //     $("#appMsg").val(res.body);
+        //     // });
+        //     setConnect(true);
+        // },() => {
+        // this.reconnect(this.socketUrl)
+      // });
+        initWebSocket();
+    });
+
+    function initWebSocket() {
+      stomp = Stomp.client(socketUrl);
+      this.stomp.connect(header, (frame) => {
+        this.successCallback()
+      }, () => {
+        this.reconnect(this.socketUrl, this.successCallback)
+      })
+    };
+
+    // 连接成功
+    function successCallback() {
+      console.info('onConnected')
+       //订阅广播
+        stomp.subscribe("/user/charge", function (res) {
+            $("#broadcastMsg").val(res.body);
+        });
+        // //订阅，一般只有订阅的时候在返回
+        // stomp.subscribe("/app/connect", function (res) {
+        //     $("#subscribeMsg").val(res.body);
+        // });
+        // //用户模式
+        stomp.subscribe("/user/connect", function (res) {
+            $("#userMsg").val(res.body);
+        });
+        stomp.subscribe("/user/mail", function (res) {
+            $("#userMsg").val(res.body);
+        });
+         stomp.subscribe("/user/login", function (res) {
+            $("#userMsg").val(res.body);
+        });
+        setConnect(true);
+    };
+
+ // 断开重连使用定时器定时连接服务器
+    function reconnect() {
+      console.info('in reconnect function')
+      let connected = false
+      const reconInv = setInterval(() => {
+        console.info('in interval' + Math.random())
+        stomp = Stomp.client(socketUrl);
+        this.stomp.connect(header, (frame) => {
+          console.info('reconnected success')
+          // 连接成功，清除定时器
+          clearInterval(reconInv)
+          connected = true
+          successCallback()
+        }, () => {
+          console.info('reconnect failed')
+          console.info('connected:' + connected)
+          if (connected) {
+            console.info('connect .... what?')
+          }
+        })
+      }, 2000)
+    };
+    $("#disconnect").click(function () {
+        if (stomp != null) {
+            stomp.disconnect();
+        }
+        setConnect(false);
+    });
+    //设置按钮
+    function setConnect(connectStatus) {
+        $("#connect").attr("disabled", connectStatus);
+        $("#disconnect").attr("disabled", !connectStatus);
+    }
+
+    //发送广播消息
+    $("#broadcastButton").click(function () {
+        let data = "hi"
+        stomp.send("/user/connect", header, data)
+    });
+
+    //发送用户消息
+    $("#userButton").click(function () {
+        let data = "hello"
+        stomp.send("/game/connect1", header, data)
+    });
+
+    //发送web消息
+    $("#appButton").click(function () {
+        stomp.send("/app/topic/app", header, JSON.stringify({"body":$("#appText").val()}))
+    });
+</script>
+</html>
