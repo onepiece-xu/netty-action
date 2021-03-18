@@ -14,12 +14,13 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.codec.stomp.StompSubframeAggregator;
 import io.netty.handler.codec.stomp.StompSubframeDecoder;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import io.netty.util.concurrent.EventExecutorGroup;
 import lombok.extern.slf4j.Slf4j;
-
 import javax.net.ssl.*;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -66,7 +67,8 @@ public class Main {
                 serverSSLContext.init(keyManagers, trustManagers, null);
 
             } catch (IOException | KeyStoreException | CertificateException | NoSuchAlgorithmException | UnrecoverableKeyException | KeyManagementException e) {
-                log.error("Error on ssl configuration",e);
+//                log.error("Error on ssl configuration",e);
+                System.out.println("Error on ssl configuration");
             }
         }
         final EventLoopGroup acceptLoopGroup = new NioEventLoopGroup(1, new DefaultThreadFactory("acceptThread"));
@@ -78,6 +80,7 @@ public class Main {
             b.group(acceptLoopGroup, rwLoopGroup)
                     .localAddress(new InetSocketAddress(port))
                     .channel(NioServerSocketChannel.class)
+                    .handler(new LoggingHandler(LogLevel.INFO))
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) {
