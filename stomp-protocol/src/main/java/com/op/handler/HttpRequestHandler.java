@@ -28,7 +28,7 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
-        log.trace("Req rcv " + request);
+        log.info("Req rcv " + request);
         if (HttpUtil.is100ContinueExpected((request))) {
             send100Continue(ctx);
         }
@@ -45,9 +45,9 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
             if (!keepAlive)
                 f.addListener(ChannelFutureListener.CLOSE);
         }
-        else if (request.uri().matches(baseUri+"/\\d{1,3}/\\w*/websocket")){
+        else {
             String[] params = request.uri().split("/", 5);
-            log.trace("Protocol switch " + Arrays.toString(params));
+            log.info("Protocol switch " + Arrays.toString(params));
             serverRuntime.addSessionInfo(params[3],new SessionInfo(ctx.channel()));
             ctx.channel().attr(ServerRuntime.sessionAttribute).set(params[3]);
             ChannelFuture closeFuture = ctx.channel().closeFuture();

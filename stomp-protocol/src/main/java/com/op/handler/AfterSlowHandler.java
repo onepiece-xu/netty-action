@@ -23,7 +23,7 @@ public class AfterSlowHandler extends SimpleChannelInboundHandler<StompFrame> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, StompFrame msg) throws Exception {
-        log.trace("After slow");
+        log.info("After slow");
         Attribute<String> sessionId = ctx.channel().attr(ServerRuntime.sessionAttribute);
         StompFrame stompFrame = new DefaultStompFrame(StompCommand.MESSAGE);
         String destination = "/user/proxy/kafka";
@@ -32,5 +32,14 @@ public class AfterSlowHandler extends SimpleChannelInboundHandler<StompFrame> {
         stompFrame.headers().add(StompHeaders.SUBSCRIPTION, serverRuntime.searchSubscriptionId(sessionId.get(),destination));
         stompFrame.content().writeCharSequence("{\"service\":1}", StandardCharsets.UTF_8);
         ctx.channel().writeAndFlush(stompFrame);
+    }
+
+    /**
+     * @param ctx
+     * @param cause
+     */
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        log.info(cause.getMessage());
     }
 }

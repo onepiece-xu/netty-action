@@ -14,9 +14,11 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.codec.stomp.StompSubframeAggregator;
 import io.netty.handler.codec.stomp.StompSubframeDecoder;
+import io.netty.handler.codec.stomp.StompSubframeEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslHandler;
+import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import io.netty.util.concurrent.EventExecutorGroup;
@@ -91,14 +93,15 @@ public class Main {
                                 ch.pipeline().addLast(new SslHandler(sslEngine));
                             }
                             ch.pipeline().addLast(new HttpServerCodec());
+                            ch.pipeline().addLast(new ChunkedWriteHandler());
                             ch.pipeline().addLast(new HttpObjectAggregator(64 * 1024));
-                            ch.pipeline().addLast(new HttpRequestHandler("/ws", serverRuntime));
-                            ch.pipeline().addLast(new WebSocketServerProtocolHandler("/ws", null, false, 10 * 1024 * 1024, false, true, 10000L));
-                            ch.pipeline().addLast("sockjsDecoder", new SockJsDecoder());
-                            ch.pipeline().addLast(new SockJsEncoder());
+//                            ch.pipeline().addLast(new HttpRequestHandler("/ws", serverRuntime));
+                            ch.pipeline().addLast(new WebSocketServerProtocolHandler("/ws","v11.stomp"));
+//                            ch.pipeline().addLast(new SockJsDecoder());
+//                            ch.pipeline().addLast(new SockJsEncoder());
                             ch.pipeline().addLast(new StompSubframeDecoder());
                             ch.pipeline().addLast(new StompSubframeAggregator(10 * 1024 * 1024));
-                            ch.pipeline().addLast(new MyStompSubframeEncoder());
+                            ch.pipeline().addLast(new StompSubframeEncoder());
                             ch.pipeline().addLast(stompGroup,"stompHandler", new StompMessageHandler(serverRuntime, 0, 30000));
                             ch.pipeline().addLast(new AfterSlowHandler(serverRuntime));
                         }

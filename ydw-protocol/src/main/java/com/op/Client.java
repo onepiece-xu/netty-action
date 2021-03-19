@@ -52,7 +52,7 @@ public class Client {
                                 4,0,20));
 //                            pipeline.addLast("ReadTimeoutHandler", new IdleStateHandler()Handler(50));
 //                            pipeline.addLast("LoginAuthHandler", new LoginAuthReqHandler());
-//                            pipeline.addLast(new MyClientHandler2(deviceId));
+                            pipeline.addLast(new MyClientHandler2(null));
                             pipeline.addLast(new MyClientHandler());
                     }
                 });

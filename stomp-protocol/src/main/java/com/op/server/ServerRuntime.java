@@ -13,13 +13,13 @@ public class ServerRuntime {
     private AtomicInteger sessionCnt = new AtomicInteger(0);
 
     public void addSessionInfo(String sessionId, SessionInfo sessionInfo) {
-        log.trace("Session added " + sessionId);
+        log.info("Session added " + sessionId);
         sessions.put(sessionId,sessionInfo);
         log.info("Total sessions: " + sessionCnt.incrementAndGet());
     }
 
     public void removeSession(String sessionId) {
-        log.trace("Session removed " + sessionId);
+        log.info("Session removed " + sessionId);
         sessions.remove(sessionId);
         log.info("Total sessions: " + sessionCnt.decrementAndGet());
     }

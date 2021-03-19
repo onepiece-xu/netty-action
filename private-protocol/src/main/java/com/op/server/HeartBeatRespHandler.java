@@ -4,13 +4,14 @@ import com.op.model.NettyHeader;
 import com.op.model.NettyMessage;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 
 /**
  * @author xulh
  * @description: TODO
  * @date 2021/2/114:13
  */
-public class HeartBeatRespHandler extends ChannelHandlerAdapter {
+public class HeartBeatRespHandler extends ChannelInboundHandlerAdapter {
 
 
     @Override
