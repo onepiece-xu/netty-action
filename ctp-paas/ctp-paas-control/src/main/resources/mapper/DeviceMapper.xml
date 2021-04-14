@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ydw.control.dao.DeviceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.ydw.control.model.db.Device">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="mac_addr" property="macAddr" />
+        <result column="intranet_ip" property="intranetIp" />
+        <result column="internet_ip" property="internetIp" />
+        <result column="os" property="os" />
+        <result column="cpu_model" property="cpuModel" />
+        <result column="cpu_number" property="cpuNumber" />
+        <result column="memory_model" property="memoryModel" />
+        <result column="memory_size" property="memorySize" />
+        <result column="graphics" property="graphics" />
+        <result column="disk_model" property="diskModel" />
+        <result column="disk_size" property="diskSize" />
+        <result column="network_card" property="networkCard" />
+        <result column="type" property="type" />
+    </resultMap>
+
+</mapper>
