@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author xulh
  * @since 2021-04-14
  */
-@FeignClient(value = "ctp-paas-monitor", path = "/ctp-paas-monitor")
+@FeignClient(value = "ctp-paas-control", path = "/ctp-paas-control")
 public interface IControlService {
 
     //设备注册上报

@@ -7,8 +7,10 @@ package com.ydw.control.model.constant;
  */
 public final class Constants {
 
-    public  static final int DEVICE_ARCH_ARM        =  0;     ///arm设备
-    public  static final int DEVICE_ARCH_X86        =  1;     ///x86 设备
+    public static final String AUTH_HEADER = "Authorization";
+
+    public static final int DEVICE_ARCH_ARM        =  0;     ///arm设备
+    public static final int DEVICE_ARCH_X86        =  1;     ///x86 设备
 
     public static final String DEVICE_ENCODE_H264 = "264";   ///h264 编码
     public static final String DEVICE_ENCODE_H265 = "265";   ///h265 编码

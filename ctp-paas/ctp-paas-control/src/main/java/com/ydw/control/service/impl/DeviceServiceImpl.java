@@ -1,6 +1,7 @@
 package com.ydw.control.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ydw.control.dao.DeviceMapper;
 import com.ydw.control.model.db.Device;
@@ -9,6 +10,7 @@ import com.ydw.control.model.vo.ResultInfo;
 import com.ydw.control.service.IDeviceService;
 import com.ydw.control.service.IMonitorService;
 import com.ydw.control.utils.SequenceGenerator;
+import com.ydw.control.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,9 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
 
     @Autowired
     private IMonitorService monitorService;
+
+    @Autowired
+    private DeviceMapper deviceMapper;
 
     /**
      * 重启
@@ -65,7 +70,13 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
      */
     @Override
     public ResultInfo shutdown(String[] devIds) {
-        return null;
+        QueryWrapper<Device> qw = new QueryWrapper<>();
+        qw.in("id", devIds);
+        List<Device> list = super.list(qw);
+        for (Device device : list){
+            monitorService.shutdown(device);
+        }
+        return ResultInfo.success();
     }
 
     /**
@@ -96,13 +107,13 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
      * @return
      */
     @Override
-    public ResultInfo addDevice(DeviceInfo param) {
+    public Device addDevice(DeviceInfo param) {
         QueryWrapper<Device> qw = new QueryWrapper<>();
         qw.eq("mac_addr", param.getMacAddr());
-        Device one = getOne(qw);
-        if (one == null){
+        Device device = getOne(qw);
+        if (device == null){
             logger.info("此设备{}为第一次注册，录入设备信息！", param);
-            Device device = new Device();
+            device = new Device();
             device.setCpuModel(param.getCpuModel());
             device.setCpuNumber(param.getCpuNumber());
             device.setDiskModel(param.getDiskModel());
@@ -122,10 +133,10 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
             save(device);
         }else{
             logger.info("此设备{}已注册过，更新设备状态！", param);
-            one.setStatus(1);
-            updateById(one);
+            device.setStatus(1);
+            updateById(device);
         }
-        return ResultInfo.success();
+        return device;
     }
 
     /**
@@ -135,18 +146,18 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
      * @return
      */
     @Override
-    public ResultInfo offlineDevice(String macAddr) {
+    public Device offlineDevice(String macAddr) {
         QueryWrapper<Device> qw = new QueryWrapper<>();
         qw.eq("mac_addr", macAddr);
-        Device one = getOne(qw);
-        if (one == null){
+        Device device = getOne(qw);
+        if (device == null){
             logger.error("此设备{}未注册过！", macAddr);
         }else{
             logger.info("此设备{}进行掉线设置！", macAddr);
-            one.setStatus(1);
-            updateById(one);
+            device.setStatus(0);
+            updateById(device);
         }
-        return ResultInfo.success();
+        return device;
     }
 
     /**
@@ -159,5 +170,26 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         QueryWrapper<Device> qw = new QueryWrapper<>();
         qw.eq("mac_addr", macAddr);
         return getOne(qw);
+    }
+
+    /**
+     * 获取设备列表
+     *
+     * @param search
+     * @param status
+     * @param buildPage
+     * @return
+     */
+    @Override
+    public ResultInfo getDeviceList(String search, Integer status,Page buildPage) {
+        QueryWrapper<Device> qw = new QueryWrapper<>();
+        if (StringUtil.isNotBlank(search)){
+            qw.and( w -> w.like("name", search).or().like("intranet_ip", search));
+        }
+        if (status != null){
+            qw.and(w -> w.eq("status", status));
+        }
+        Page page = page(buildPage, qw);
+        return ResultInfo.success(page);
     }
 }

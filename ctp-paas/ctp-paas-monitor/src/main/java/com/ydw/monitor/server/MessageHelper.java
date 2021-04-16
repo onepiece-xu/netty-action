@@ -53,14 +53,15 @@ public class MessageHelper {
 
     public void dispatchMessage(Channel channel, MessageHeader messageHeader, MessageContent messageContent){
         int commandId = messageHeader.getCommandId();
-        logger.info("channel-{}收到commandId为{}，msg为{}", channel.id(),commandId, messageContent.getContent());
+        logger.info("---------------------------------------------------------------------------------------");
+        logger.info("channel-{}收到commandId为{}，msg为{}", channel.id().asLongText(), commandId, messageContent.getContent());
         switch (commandId){
             case Constants.COMMAND_SYSTEM_INIT:
-                logger.info("channel-{}指令为初始化指令，开始初始化！", channel.id(), commandId, messageContent.getContent());
+                logger.info("channel-{}收到指令为初始化指令，开始初始化！", channel.id().asLongText(), commandId, messageContent.getContent());
                 threadPool.execute(() -> clientService.init(channel, messageContent));
                 break;
             case Constants.COMMAND_SYSTEM_STATUS:
-                logger.info("channel-{}指令为状态上报指令，开始做状态检查！", channel.id(), commandId, messageContent.getContent());
+                logger.info("channel-{}收到指令为状态上报指令，开始做状态检查！", channel.id().asLongText(), commandId, messageContent.getContent());
                 threadPool.execute(() -> clientService.statusCheck(channel, messageContent));
                 break;
         }

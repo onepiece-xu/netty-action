@@ -21,8 +21,9 @@ import java.time.LocalDateTime;
 public class ConnectLogServiceImpl extends ServiceImpl<ConnectLogMapper, ConnectLog> implements IConnectLogService {
 
     @Override
-    public void addLog(String meterageId, Integer agentStatus, Integer appStatus, Integer streamStatus) {
+    public void addLog(String deviceId, String meterageId, Integer agentStatus, Integer appStatus, Integer streamStatus) {
         ConnectLog connectLog = new ConnectLog();
+        connectLog.setDeviceId(deviceId);
         connectLog.setId(SequenceGenerator.sequence());
         connectLog.setAgentStatus(agentStatus);
         connectLog.setAppStatus(appStatus);

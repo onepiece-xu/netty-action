@@ -5,6 +5,8 @@ import com.ydw.monitor.server.FullMessage;
 import com.ydw.monitor.server.MessageContent;
 import io.netty.channel.Channel;
 
+import java.util.Map;
+
 /**
  * @author xulh
  * @description: TODO
@@ -78,4 +80,10 @@ public interface IClientService {
      * @param deviceInfo
      */
     void addDeviceInfo(Channel channel, DeviceInfo deviceInfo);
+
+    /**
+     * 获取所有客户端
+     * @return
+     */
+    Map<String,String> getAllClient();
 }

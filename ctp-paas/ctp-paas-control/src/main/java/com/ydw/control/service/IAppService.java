@@ -2,6 +2,7 @@ package com.ydw.control.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ydw.control.model.db.App;
+import com.ydw.control.model.db.Device;
 import com.ydw.control.model.vo.AppInfo;
 import com.ydw.control.model.vo.ResultInfo;
 
@@ -17,14 +18,16 @@ public interface IAppService extends IService<App> {
      * @param appId
      * @return
      */
-    ResultInfo startApp(String appId);
+    ResultInfo startApp(String deviceId, String appId);
+
+    ResultInfo startApp(Device device, App app);
 
     /**
      * 关闭app
      * @param appId
      * @return
      */
-    ResultInfo stopApp(String appId);
+    ResultInfo stopApp(String deviceId, String appId);
 
     /**
      * 安装app

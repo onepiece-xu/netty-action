@@ -3,6 +3,7 @@ package com.ydw.control.interceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.NamedThreadLocal;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Iterator;
 import java.util.Map;
 
+@Component
 public class LogInterceptor extends HandlerInterceptorAdapter {
 
 	private Logger logger = LoggerFactory.getLogger(LogInterceptor.class);

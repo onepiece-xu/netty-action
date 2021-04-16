@@ -1,5 +1,6 @@
 package com.ydw.monitor.server;
 
+import com.ydw.monitor.utils.ThreadPool;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -36,6 +37,9 @@ public class DeviceConnectServer {
     private int readTimeoutSeconds;
 
     @Autowired
+    ThreadPool threadPool;
+
+    @Autowired
     private MessageHandler messageHandler;
 
     /**
@@ -50,6 +54,13 @@ public class DeviceConnectServer {
 
     @PostConstruct
     public void init(){
+        threadPool.submit(() -> start());
+    }
+
+    /**
+     * 开启服务
+     */
+    public void start(){
         ServerBootstrap serverBootstrap = new ServerBootstrap();
         serverBootstrap.group(bossGroup, workerGroup);
         serverBootstrap.channel(NioServerSocketChannel.class);
@@ -59,7 +70,7 @@ public class DeviceConnectServer {
             @Override
             protected void initChannel(SocketChannel ch) {
                 ChannelPipeline pipeline = ch.pipeline();
-                pipeline.addLast("heartBeatHandler", new ReadTimeoutHandler(readTimeoutSeconds));
+                pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(readTimeoutSeconds));
                 pipeline.addLast("lengthFieldBasedFrameDecoder",
                         new LengthFieldBasedFrameDecoder(1<<16,16,4,0,0));
                 pipeline.addLast("messageHandler", messageHandler);

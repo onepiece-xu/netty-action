@@ -1,41 +1,62 @@
 package com.ydw.control.model.vo;
 
+import com.ydw.control.model.db.SignalServer;
+import com.ydw.control.model.db.TurnServer;
+
 import java.io.Serializable;
 
 /**
- * <p>
- * 
- * </p>
- *
+ * webrtc连接信息类
  * @author xulh
  * @since 2020-07-30
  */
 public class WebrtcConfig implements Serializable {
 
-    private static final long serialVersionUID=1L;
-
     /**
      * 信令服务器url
      */
-    private String signalServer;
+    protected String signalServer;
 
-    private String signalServerHttps;
-    
-    private String stunUrl;
-    
-    private String turnTcpUrl;
-    
-    private String turnUdpUrl;
+    protected String signalServerHttps;
+
+    /**
+     * turn服务url
+     */
+    protected String stunUrl;
+
+    protected String turnTcpUrl;
+
+    protected String turnUdpUrl;
 
     /**
      * turn 服务登录名称
      */
-    private String turnUser;
+    protected String turnUser;
 
     /**
      * turn 登录密码
      */
-    private String turnPassword;
+    protected String turnPassword;
+
+    public WebrtcConfig(WebrtcConfig webrtcConfig) {
+        this.signalServer = webrtcConfig.getSignalServer();
+        this.signalServerHttps = webrtcConfig.getSignalServerHttps();
+        this.stunUrl = webrtcConfig.getStunUrl();
+        this.turnTcpUrl = webrtcConfig.getTurnTcpUrl();
+        this.turnUdpUrl = webrtcConfig.getTurnUdpUrl();
+        this.turnUser = webrtcConfig.getTurnUser();
+        this.turnPassword = webrtcConfig.getTurnPassword();
+    }
+
+    public WebrtcConfig(SignalServer signalServer, TurnServer turnServer){
+        this.signalServer = signalServer.getHttpUrl();
+        this.signalServerHttps = signalServer.getHttpsUrl();
+        this.stunUrl = turnServer.getStunUrl();
+        this.turnTcpUrl = turnServer.getTurnTcpUrl();
+        this.turnUdpUrl = turnServer.getTurnUdpUrl();
+        this.turnUser = turnServer.getUserName();
+        this.turnPassword = turnServer.getCredential();
+    }
     
 	public String getSignalServer() {
         return signalServer;

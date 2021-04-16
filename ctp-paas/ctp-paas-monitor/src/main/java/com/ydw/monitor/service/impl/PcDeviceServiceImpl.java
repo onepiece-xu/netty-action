@@ -50,7 +50,9 @@ public class PcDeviceServiceImpl implements IDeviceService {
      */
     @Override
     public ResultInfo shutdown(DeviceInfo param) {
-        return null;
+        FullMessage message = buildMessage(param, Constants.COMMAND_SYSTEM_CLOSE);
+        boolean b = clientService.sendCommand(param.getMacAddr(), message);
+        return b ? ResultInfo.success() : ResultInfo.fail();
     }
 
     /**

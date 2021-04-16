@@ -35,7 +35,6 @@ public class MessageHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        logger.info("{} channelRead", ctx.channel().remoteAddress());
         ByteBuf byteBuf = (ByteBuf)msg;
         messageHelper.dispatchMessage(ctx.channel(), byteBuf);
     }
@@ -47,7 +46,6 @@ public class MessageHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        logger.info("{} channelInactive", ctx.channel().remoteAddress());
         clientService.removeClient(ctx.channel());
     }
 
@@ -59,7 +57,6 @@ public class MessageHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        logger.info("{} exceptionCaught", ctx.channel().remoteAddress());
         cause.printStackTrace();
         ctx.close();
     }

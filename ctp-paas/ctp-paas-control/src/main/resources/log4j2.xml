@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN" monitorInterval="60">
     <properties>
-        <property name="LOG_HOME">../logs/monitor</property>
+        <property name="LOG_HOME">../logs/control</property>
         <property name="DEBUG_LOG_FILE_NAME">debug</property>
         <property name="INFO_LOG_FILE_NAME">info</property>
         <property name="WARN_LOG_FILE_NAME">warn</property>     
@@ -26,7 +26,7 @@
             <DefaultRolloverStrategy max="28"/>
             <Filters>
                 <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY" />
-                <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY" />
+                <ThresholdFilter level="info" onMatch="DENY" onMismatch="NEUTRAL" />
             </Filters>
         </RollingRandomAccessFile>
 
@@ -70,9 +70,11 @@
     </Appenders>
 
     <Loggers>
-        <AsyncRoot level="info" includeLocation="true">
-            <appender-ref ref="consoleAppender" />
+        <AsyncLogger name="com.ydw.control" level="DEBUG">
             <appender-ref ref="debugAppender" />
+        </AsyncLogger>
+        <AsyncRoot level="INFO" includeLocation="true">
+            <appender-ref ref="consoleAppender" />
             <appender-ref ref="infoAppender" />
             <appender-ref ref="warnAppender" />
             <appender-ref ref="errorAppender" />

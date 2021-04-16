@@ -35,7 +35,7 @@ public class PcStreamServiceImpl implements IStreamService {
      */
     @Override
     public ResultInfo startStream(StreamInfo param) {
-        FullMessage message = buildMessage(param, Constants.COMMAND_SYSTEM_REBOOT);
+        FullMessage message = buildMessage(param, Constants.COMMAND_STREAM_START);
         boolean b = clientService.sendCommand(param.getMacAddr(), message);
         return b ? ResultInfo.success() : ResultInfo.fail();
     }
@@ -48,7 +48,7 @@ public class PcStreamServiceImpl implements IStreamService {
      */
     @Override
     public ResultInfo stopStream(StreamInfo param) {
-        FullMessage message = buildMessage(param, Constants.COMMAND_SYSTEM_REBOOT);
+        FullMessage message = buildMessage(param, Constants.COMMAND_STREAM_STOP);
         boolean b = clientService.sendCommand(param.getMacAddr(), message);
         return b ? ResultInfo.success() : ResultInfo.fail();
     }

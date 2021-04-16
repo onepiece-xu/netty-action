@@ -22,8 +22,7 @@ public class SimpleMp {
         //指定生成的表名
 
 
-        String[] tableNames = new String[]{"app","app_strategy","device",
-        "meterage","meterage_log","signal_server","turn_server"};
+        String[] tableNames = new String[]{"user"};
 
 
         generateByTables(packageName, tableNames);

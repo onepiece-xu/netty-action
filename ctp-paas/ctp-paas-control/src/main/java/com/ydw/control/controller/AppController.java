@@ -24,14 +24,14 @@ public class AppController {
 
     //开启游戏
     @PostMapping(value = "/startApp")
-    public ResultInfo startApp(@RequestParam(required = false) String appId) {
-        return appService.startApp(appId);
+    public ResultInfo startApp(@RequestParam String deviceId, @RequestParam(required = false) String appId) {
+        return appService.startApp(deviceId, appId);
     }
 
     //关闭游戏
     @PostMapping(value = "/stopApp")
-    public ResultInfo stopApp(@RequestParam(required = false) String appId) {
-        return appService.stopApp(appId);
+    public ResultInfo stopApp(@RequestParam String deviceId, @RequestParam(required = false) String appId) {
+        return appService.stopApp(deviceId, appId);
     }
 
     //安装应用

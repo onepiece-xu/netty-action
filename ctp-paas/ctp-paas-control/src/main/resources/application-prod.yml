@@ -1,17 +1,17 @@
 server:
-  port: 8085
+  port: 8086
   servlet:
-    context-path: /ctp-paas-monitor
+    context-path: /ctp-paas-control
 spring:
   application:
-    name: ctp-paas-monitor
+    name: ctp-paas-control
   cloud:
     nacos:
       discovery:
         server-addr: 192.168.0.113:8848 # 将gateway注册到nacos
   # 数据库连接配置
   datasource:
-    url: jdbc:mysql://192.168.0.188:3306/cgp_paas?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&useAffectedRows=true
+    url: jdbc:mysql://192.168.0.188:3306/ctp_paas?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&useAffectedRows=true
     username: root
     password: Yidianwan!23
     #使用druid数据源
@@ -58,8 +58,6 @@ mybatis-plus:
   # 如果是放在src/main/java目录下 classpath:/com/yourpackage/*/mapper/*Mapper.xml
   # 如果是放在resource目录 classpath:/mapper/*.xml
   mapper-locations: classpath*:/mapper/*.xml
-  #实体扫描，多个package用逗号或者分号分隔
-  typeAliasesPackage: com.ydw.resource.model.db
   global-config:
     # 数据库相关配置
     db-config:
@@ -94,10 +92,3 @@ mybatis-plus:
 threadpool:
   coreNum: 8
   maxNum: 16
-
-#netty配置
-netty:
-  #启动端口
-  port: 8899
-  #客户端读超时秒数
-  readTimeoutSeconds: 300

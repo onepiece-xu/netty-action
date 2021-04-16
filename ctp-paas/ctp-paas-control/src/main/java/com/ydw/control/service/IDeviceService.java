@@ -1,5 +1,6 @@
 package com.ydw.control.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ydw.control.model.db.Device;
 import com.ydw.control.model.vo.DeviceInfo;
@@ -47,14 +48,28 @@ public interface IDeviceService extends IService<Device> {
      * @param param
      * @return
      */
-    ResultInfo addDevice(DeviceInfo param);
+    Device addDevice(DeviceInfo param);
 
     /**
      * 设备掉线
      * @param macAddr
      * @return
      */
-    ResultInfo offlineDevice(String macAddr);
+    Device offlineDevice(String macAddr);
 
+    /**
+     * 根据mac地址获取设备
+     * @param macAddr
+     * @return
+     */
     Device getDeviceByMac(String macAddr);
+
+    /**
+     * 获取设备列表
+     * @param search
+     * @param status
+     * @param buildPage
+     * @return
+     */
+    ResultInfo getDeviceList(String search, Integer status, Page buildPage);
 }

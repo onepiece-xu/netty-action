@@ -2,7 +2,9 @@ package com.ydw.control.service;
 
 import com.ydw.control.model.db.App;
 import com.ydw.control.model.db.Device;
+import com.ydw.control.model.vo.AppInfo;
 import com.ydw.control.model.vo.ResultInfo;
+import com.ydw.control.model.vo.StreamInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,11 +20,23 @@ public interface IMonitorService{
     @PostMapping("/device/reboot")
     ResultInfo reboot(@RequestBody Device device);
 
+    //重启设备
+    @PostMapping("/device/shutdown")
+    ResultInfo shutdown(@RequestBody Device device);
+
     //启动app
     @PostMapping("/app/startApp")
-    ResultInfo startApp(@RequestBody App app);
+    ResultInfo startApp(@RequestBody AppInfo app);
 
     //关闭app
     @PostMapping("/app/stopApp")
-    ResultInfo stopApp(@RequestBody App app);
+    ResultInfo stopApp(@RequestBody AppInfo app);
+
+    //开流服务
+    @PostMapping("/stream/startStream")
+    ResultInfo startStream(@RequestBody StreamInfo streamInfo);
+
+    //关流服务
+    @PostMapping("/stream/stopStream")
+    ResultInfo stopStream(@RequestBody StreamInfo streamInfo);
 }

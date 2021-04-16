@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -69,7 +70,7 @@ public class ClientServiceImpl implements IClientService {
         logger.info("channel-{}，macAddr-{}，收到心跳指令{}！",channel.id(), macAddr, messageContent.getContent());
         DeviceInfo deviceInfo = getDeviceInfo(channel);
         if (deviceInfo == null){
-            logger.info("为获取到客户端的设备详情！连接掐断！");
+            logger.info("未获取到客户端的设备详情！连接掐断！");
             channel.close();
         }
         int oldAgentStatus = deviceInfo.getAgentStatus();
@@ -78,12 +79,13 @@ public class ClientServiceImpl implements IClientService {
         logger.info("设备macAddr-{}之前的状态，agentStatus:{},streamStatus:{},appStatuts:{}",
                 macAddr, oldAgentStatus, oldStreamStatus, oldAppStatus);
         DeviceStatus deviceStatus = getDeviceStatus(messageContent);
+        deviceStatus.setMacAddr(macAddr);
         int newAgentStatus = deviceStatus.getAgentStatus();
         int newStreamStatus = deviceStatus.getStreamStatus();
         int newAppStatus = deviceStatus.getAppStatus();
         logger.info("上报的设备macAddr-{}目前的状态，agentStatus:{},streamStatus:{},appStatuts:{}",
                 macAddr, newAgentStatus, newStreamStatus, newAppStatus);
-        boolean changed = oldAgentStatus != newAgentStatus || oldStreamStatus != newStreamStatus || newAppStatus != newAppStatus;
+        boolean changed = oldAgentStatus != newAgentStatus || oldStreamStatus != newStreamStatus || oldAppStatus != newAppStatus;
         if (changed){
             logger.info("设备macAddr-{}的状态已有变化{}, 改变内存状态！", macAddr, deviceStatus);
             //状态发生改变，修改内存状态
@@ -152,7 +154,7 @@ public class ClientServiceImpl implements IClientService {
     @Override
     public boolean sendCommand(Channel channel, FullMessage fullMessage) {
         ByteBuf byteBuf = buildMessage(fullMessage);
-        channel.write(byteBuf);
+        channel.writeAndFlush(byteBuf);
         return true;
     }
 
@@ -160,12 +162,12 @@ public class ClientServiceImpl implements IClientService {
         ByteBuf byteBuf = Unpooled.buffer();
         MessageHeader messageHeader = fullMessage.getMessageHeader();
         byteBuf.writeShort(messageHeader.getCmdType());
-        byteBuf.writeShort(messageHeader.getCmdType());
+        byteBuf.writeShort(messageHeader.getCsType());
         byteBuf.writeInt(messageHeader.getCommandId());
         byteBuf.writeInt(messageHeader.getPacketId());
         byteBuf.writeInt(messageHeader.getTimeStamp());
         MessageContent messageContent = fullMessage.getMessageContent();
-        if (messageContent == null && StringUtil.isBlank(messageContent.getContent())){
+        if (messageContent == null || StringUtil.isBlank(messageContent.getContent())){
             byteBuf.writeInt(0);
         }else{
             String content = messageContent.getContent();
@@ -231,5 +233,19 @@ public class ClientServiceImpl implements IClientService {
     public void addDeviceInfo(Channel channel, DeviceInfo deviceInfo) {
         AttributeKey<DeviceInfo> deviceInfoKey = AttributeKey.valueOf(Constants.CHANNEL_DEVICE_KEY);
         channel.attr(deviceInfoKey).set(deviceInfo);
+    }
+
+    /**
+     * 获取所有客户端
+     *
+     * @return
+     */
+    @Override
+    public Map<String, String> getAllClient() {
+        HashMap<String, String> map = new HashMap<>();
+        for (Map.Entry<String, Channel> entry : channelMap.entrySet()) {
+            map.put(entry.getKey(),entry.getValue().id().asLongText());
+        }
+        return map;
     }
 }

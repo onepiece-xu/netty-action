@@ -156,4 +156,23 @@ public class StreamInfo extends DeviceInfo implements Serializable {
     public void setType(int type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "StreamInfo{" +
+                "token='" + token + '\'' +
+                ", codec=" + codec +
+                ", fps=" + fps +
+                ", video=" + video +
+                ", screen=" + screen +
+                ", speed=" + speed +
+                ", connectId='" + connectId + '\'' +
+                ", type=" + type +
+                ", webRTC=" + webRTC +
+                ", signalServer='" + signalServer + '\'' +
+                ", turnServer='" + turnServer + '\'' +
+                ", turnUser='" + turnUser + '\'' +
+                ", turnPassword='" + turnPassword + '\'' +
+                '}';
+    }
 }

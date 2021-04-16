@@ -6,10 +6,7 @@ import com.ydw.control.service.IDeviceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 设备处理
@@ -18,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/device")
-public class DeviceController {
+public class DeviceController extends BaseController{
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -40,7 +37,7 @@ public class DeviceController {
     //关机
     @PostMapping(value = "/shutdown")
     public ResultInfo shutdown(@RequestBody String[] devIds) {
-        return ResultInfo.success();
+        return deviceService.shutdown(devIds);
     }
 
     //开机
@@ -53,6 +50,13 @@ public class DeviceController {
     @PostMapping(value = "/init")
     public ResultInfo init(@RequestBody DeviceInfo param){
         return ResultInfo.success();
+    }
+
+    //获取设备列表
+    @GetMapping("/getDeviceList")
+    public ResultInfo getDeviceList(@RequestParam(required = false) String search,
+                                    @RequestParam(required = false) Integer status){
+        return deviceService.getDeviceList(search, status, super.buildPage());
     }
 }
 
