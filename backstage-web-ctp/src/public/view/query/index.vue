@@ -2,7 +2,8 @@
     <div>
         <div class="page-inner query">
             <div class="table-action">
-                <button type="button" class="btn btn-info" @click="restartItem" >关机</button>               
+                <button type="button" class="btn btn-info" @click="restartItem" >关机</button>    
+                <button type="button" class="btn btn-info" @click="rebootItem" >重启</button>            
                 <div class="pull-right">
                     <div class="search-box">
                         <form name="searchForm" novalidate @submit.prevent="applyGlobalSearch()">
@@ -88,7 +89,7 @@
 </template>
 
 <script>
-import {shutdown,getDeviceList,connectStream} from '@/public/api/equipment.js';
+import {shutdown,reboot,getDeviceList,connectStream} from '@/public/api/equipment.js';
 import detailPage from '@/public/common-tmpl/detail.vue' 
 export default {
     data(){
@@ -179,7 +180,12 @@ export default {
             this.type = 'shutdown'
             this.operationDialogVisible = true
             this.operationTitle = '是否确认关闭选择的设备？'
-        },       
+        },   
+        rebootItem(){
+            this.type = 'reboot'
+            this.operationDialogVisible = true
+            this.operationTitle = '是否确认重启选择的设备？'
+        },      
         operation(){
             let ids = [];
             this.multipleSelection.map(item =>{
@@ -190,6 +196,13 @@ export default {
             // return
             if(this.type == 'shutdown'){
                 shutdown(data).then((res) =>{
+                    console.log(res)
+                    this.operationDialogVisible = false;
+                    this.initData()
+                })
+            }
+            if(this.type == 'reboot'){
+                reboot(data).then((res) =>{
                     console.log(res)
                     this.operationDialogVisible = false;
                     this.initData()

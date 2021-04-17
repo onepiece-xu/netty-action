@@ -75,8 +75,8 @@ public class StreamServiceImpl implements IStreamService {
         streamInfo.setVideo(appStrategy.getVideo());
         streamInfo.setSpeed(appStrategy.getSpeed());
 
-        streamInfo.setConnectId(meterage.getId());
-        streamInfo.setToken(DigestUtils.md5Hex(meterage.getId()));
+        streamInfo.setConnectId(device.getId());
+        streamInfo.setToken(DigestUtils.md5Hex(device.getId()));
 
         SignalServer signalServer = signalServerService.list().get(0);
         TurnServer turnServer = turnServerService.list().get(0);
@@ -89,7 +89,7 @@ public class StreamServiceImpl implements IStreamService {
         streamInfo.setTurnPassword(webRtcConfig.getTurnPassword());
         logger.info("开始开启流服务！{}", streamInfo);
         ResultInfo resultInfo = monitorService.startStream(streamInfo);
-        logger.info("启动此计量{}的游戏流服务返回结果：{}", meterage.getId(), JSON.toJSONString(resultInfo));
+        logger.info("启动此设备{}的游戏流服务返回结果：{}", device.getId(), JSON.toJSONString(resultInfo));
         ConnectStreamVO scv = new ConnectStreamVO(streamInfo.getToken(),streamInfo.getConnectId(),device.getName(),webRtcConfig);
         resultInfo.setData(scv);
         return resultInfo;

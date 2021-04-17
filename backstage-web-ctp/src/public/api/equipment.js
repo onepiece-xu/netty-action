@@ -22,6 +22,15 @@ export const shutdown = (data) => {
 };
 
 //设备关机
+export const reboot = (data) => {
+    return $http({
+        url: `/ctp-paas-control/device/reboot`,
+        method: "POST",
+        data:data
+    });
+};
+
+//设备关机
 export const connectStream = (params) => {
     return $http({
         url: `/ctp-paas-control/stream/connectStream`,

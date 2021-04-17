@@ -16,8 +16,8 @@ module.exports = {
         ]
     },
     output: {
-        path: `${__dirname}/built`,
-        publicPath: "/",
+        path: `${__dirname}/backstage`,
+        publicPath: "./",
         filename: "./js/[name].js"
     },
     module:{
