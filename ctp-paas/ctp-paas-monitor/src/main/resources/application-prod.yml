@@ -1,0 +1,36 @@
+server:
+  port: 8085
+  servlet:
+    context-path: /ctp-paas-monitor
+spring:
+  application:
+    name: ctp-paas-monitor
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.0.113:8848 # 注册到nacos
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 120000
+        readTimeout: 120000
+  httpclient:
+    enabled: false
+  okhttp:
+    enabled: true
+  hystrix:
+    enabled: false
+
+#配置业务线程池
+threadpool:
+  coreNum: 8
+  maxNum: 16
+
+#netty配置
+netty:
+  #启动端口
+  port: 8899
+  #客户端读超时秒数
+  readTimeoutSeconds: 60

@@ -1,0 +1,76 @@
+@charset "utf-8";
+
+.steps {
+    float: right;
+    padding-right: 90px;
+    li {
+        width: 125px;
+        float: left;
+        span {
+            display: block;
+        }
+        i {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            background: @blue;
+            text-align: center;
+            color: #fff;
+            z-index: 1;
+            position: relative;
+        }
+        &.step-start {
+            &:after {
+                width: 105px;
+                height: 5px;
+                margin-left: 20px;
+                position: relative;
+                bottom: 13px;
+                background: @grey;
+            }
+        }
+        &.step-middle {
+            width: 230px;
+            text-align: center;
+            &:after {
+                width: 230px;
+                height: 5px;
+                position: relative;
+                bottom: 13px;
+                background: @grey;
+            }
+        }
+        &.step-end {
+            div {
+                float: right;
+            }
+            &:after {
+                content: "";
+                width: 105px;
+                height: 5px;
+                position: relative;
+                bottom: 13px;
+                background: @grey;
+            }
+        }
+        &.bigger {
+            i {
+                width: 46px;
+                height: 46px;
+                border-radius: 23px;
+                padding: 8px;
+                font-size: 20px;
+            }
+            &:after {
+                bottom: 22px;
+            }
+        }
+        &.active {
+            &:after {
+                background: @blue;
+            }
+        }
+    }
+}
+

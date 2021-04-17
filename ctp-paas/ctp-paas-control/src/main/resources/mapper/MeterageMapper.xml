@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ydw.control.dao.MeterageMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.ydw.control.model.db.Meterage">
+        <id column="id" property="id" />
+        <result column="device_id" property="deviceId" />
+        <result column="app_id" property="appId" />
+        <result column="user_id" property="userId" />
+        <result column="begin_time" property="beginTime" />
+        <result column="end_time" property="endTime" />
+        <result column="total_time" property="totalTime" />
+        <result column="status" property="status" />
+    </resultMap>
+    <select id="getUnCompleteMeterageByMac" resultMap="BaseResultMap">
+        SELECT
+            m.id,
+            m.app_id,
+            m.begin_time,
+            m.device_id,
+            m.end_time,
+            m.`status`,
+            m.total_time,
+            m.user_id
+        FROM
+            device d
+        LEFT JOIN meterage m ON d.id = m.device_id
+        AND d.mac_addr = #{macAddr}
+        WHERE
+            m.`status` = 0
+    </select>
+    <select id="getUnCompleteMeterageById" resultMap="BaseResultMap">
+        SELECT
+            m.id,
+            m.app_id,
+            m.begin_time,
+            m.device_id,
+            m.end_time,
+            m.`status`,
+            m.total_time,
+            m.user_id
+        FROM
+            device d
+        LEFT JOIN meterage m ON d.id = m.device_id
+        AND d.id = #{deviceId}
+        WHERE
+            m.`status` = 0
+    </select>
+    <select id="getMeterageList" resultType="com.ydw.control.model.vo.MeterageListVO">
+        SELECT
+            m.id,
+            d.id deviceId,
+            d.`name` deviceName,
+            d.mac_addr macAddr,
+            d.intranet_ip intranetIp,
+            m.begin_time beginTime,
+            m.end_time endTime,
+            m.total_time totalTime,
+            m.`status`
+        FROM
+            meterage m
+        LEFT JOIN device d ON m.device_id = d.id
+        <where>
+            <if test="search != null">
+                (
+                    d.`name` LIKE CONCAT('%', #{search}, '%')
+                    OR d.intranet_ip LIKE CONCAT('%', #{search}, '%')
+                )
+            </if>
+            <if test="beginDateTime != null and endDateTime != null ">
+                AND (
+                    m.begin_time BETWEEN #{beginDateTime} and #{endDateTime}
+                    OR m.end_time BETWEEN #{beginDateTime} and #{endDateTime}
+                )
+            </if>
+        </where>
+    </select>
+
+</mapper>

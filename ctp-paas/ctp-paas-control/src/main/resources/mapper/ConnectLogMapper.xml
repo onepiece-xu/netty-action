@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ydw.control.dao.ConnectLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.ydw.control.model.db.ConnectLog">
+        <id column="id" property="id" />
+        <result column="meterage_id" property="meterageId" />
+        <result column="agent_status" property="agentStatus" />
+        <result column="app_status" property="appStatus" />
+        <result column="stream_status" property="streamStatus" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+</mapper>

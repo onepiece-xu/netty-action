@@ -15,6 +15,7 @@
         <module>http-protocol</module>
         <module>ydw-protocol</module>
         <module>stomp-protocol</module>
+        <module>mqtt-protocol</module>
     </modules>
 
     <properties>
@@ -73,6 +74,16 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>1.8.0-beta1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>3.3.3</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.13</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
