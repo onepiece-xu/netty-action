@@ -23,12 +23,22 @@ public class MeterageController extends BaseController{
     @Autowired
     private IMeterageService meterageService;
 
-    //获取设备列表
+    //获取计量列表
     @GetMapping("/getMeterageList")
     public ResultInfo getMeterageList(@RequestParam(required = false) String search,
+                                      @RequestParam(required = false) Integer status,
                                     @RequestParam(required = false) String beginDate,
                                     @RequestParam(required = false) String endDate){
-        return meterageService.getMeterageList(search, beginDate, endDate, super.buildPage());
+        return meterageService.getMeterageList(search, status, beginDate, endDate, super.buildPage());
+    }
+
+    //获取计量统计
+    @GetMapping("/getMeterageCount")
+    public ResultInfo getMeterageCount(@RequestParam(required = false) String search,
+                                      @RequestParam(required = false) Integer status,
+                                      @RequestParam(required = false) String beginDate,
+                                      @RequestParam(required = false) String endDate){
+        return meterageService.getMeterageCount(search, status, beginDate, endDate);
     }
 }
 

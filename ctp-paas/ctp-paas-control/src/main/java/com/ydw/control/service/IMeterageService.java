@@ -23,5 +23,7 @@ public interface IMeterageService extends IService<Meterage> {
 
     Meterage beginMeterage(String deviceId, String appId, String userId);
 
-    ResultInfo getMeterageList(String search, String beginDate, String endDate, Page buildPage);
+    ResultInfo getMeterageList(String search, Integer status, String beginDate, String endDate, Page buildPage);
+
+    ResultInfo getMeterageCount(String search, Integer status, String beginDate, String endDate);
 }

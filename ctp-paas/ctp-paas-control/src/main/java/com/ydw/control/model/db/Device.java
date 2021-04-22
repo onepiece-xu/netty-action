@@ -1,6 +1,7 @@
 package com.ydw.control.model.db;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -91,6 +92,11 @@ public class Device implements Serializable {
      * 状态0：离线，1：在线
      */
     private int status;
+
+    /**
+     * 创建时间
+     */
+    private LocalDateTime createTime;
 
     public String getId() {
         return id;
@@ -218,6 +224,14 @@ public class Device implements Serializable {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
     }
 
     @Override

@@ -1,24 +1,22 @@
 package com.ydw.monitor.server;
 
 import com.ydw.monitor.utils.ThreadPool;
-import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.*;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import io.netty.handler.timeout.IdleStateHandler;
-import io.netty.handler.timeout.ReadTimeoutHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import javax.annotation.PostConstruct;
-import java.util.concurrent.TimeUnit;
+
 
 /**
  * @author xulh
@@ -26,21 +24,18 @@ import java.util.concurrent.TimeUnit;
  * @date 2021/4/1218:04
  */
 @Component
-public class DeviceConnectServer {
+public class CtpConnectServer {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
     @Value("${netty.port}")
     private int nettyPort;
 
-    @Value("${netty.readTimeoutSeconds}")
-    private int readTimeoutSeconds;
-
     @Autowired
     ThreadPool threadPool;
 
     @Autowired
-    private MessageHandler messageHandler;
+    private CtpChannelInitializer channelInitializer;
 
     /**
      * 连接事件循环组
@@ -61,24 +56,16 @@ public class DeviceConnectServer {
      * 开启服务
      */
     public void start(){
-        ServerBootstrap serverBootstrap = new ServerBootstrap();
-        serverBootstrap.group(bossGroup, workerGroup);
-        serverBootstrap.channel(NioServerSocketChannel.class);
-        serverBootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5 * 1000 * 60);
-        serverBootstrap.handler(new LoggingHandler(LogLevel.INFO));
-        serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
-            @Override
-            protected void initChannel(SocketChannel ch) {
-                ChannelPipeline pipeline = ch.pipeline();
-                pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(readTimeoutSeconds));
-                pipeline.addLast("lengthFieldBasedFrameDecoder",
-                        new LengthFieldBasedFrameDecoder(1<<16,16,4,0,0));
-                pipeline.addLast("messageHandler", messageHandler);
-            }
-        });
-        logger.info("检测服务启动，开始绑定端口{}", nettyPort);
         try {
+            ServerBootstrap serverBootstrap = new ServerBootstrap();
+            serverBootstrap.group(bossGroup, workerGroup);
+            serverBootstrap.channel(NioServerSocketChannel.class);
+            serverBootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5 * 1000 * 60);
+            serverBootstrap.handler(new LoggingHandler(LogLevel.INFO));
+            serverBootstrap.childHandler(channelInitializer);
+            logger.info("检测服务启动，开始绑定端口{}", nettyPort);
             ChannelFuture future = serverBootstrap.bind(nettyPort).sync();
+            future.addListener(f -> logger.info("检测服务启动完成，绑定端口{}", nettyPort));
             future.channel().closeFuture().sync();
         } catch (Exception e) {
             e.printStackTrace();

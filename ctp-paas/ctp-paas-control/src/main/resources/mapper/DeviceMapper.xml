@@ -19,6 +19,8 @@
         <result column="disk_size" property="diskSize" />
         <result column="network_card" property="networkCard" />
         <result column="type" property="type" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
     </resultMap>
 
 </mapper>

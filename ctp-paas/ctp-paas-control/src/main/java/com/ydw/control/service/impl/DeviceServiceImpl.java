@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -128,13 +129,12 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
             device.setName(param.getDeviceName());
             device.setNetworkCard(param.getNetworkCard());
             device.setOs(param.getOs());
-            device.setStatus(1);
+            device.setStatus(0);
             device.setType(param.getDeviceType());
+            device.setCreateTime(LocalDateTime.now());
             save(device);
         }else{
-            logger.info("此设备{}已注册过，更新设备状态！", param);
-            device.setStatus(1);
-            updateById(device);
+            logger.info("此设备{}已注册过！", param);
         }
         return device;
     }
@@ -189,6 +189,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         if (status != null){
             qw.and(w -> w.eq("status", status));
         }
+        qw.orderByDesc("create_time");
         Page page = page(buildPage, qw);
         return ResultInfo.success(page);
     }

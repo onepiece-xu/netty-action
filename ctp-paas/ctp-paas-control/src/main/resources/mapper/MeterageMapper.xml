@@ -68,10 +68,43 @@
                     OR d.intranet_ip LIKE CONCAT('%', #{search}, '%')
                 )
             </if>
+            <if test="status != null">
+                AND (
+                    m.status = #{status}
+                )
+            </if>
             <if test="beginDateTime != null and endDateTime != null ">
                 AND (
                     m.begin_time BETWEEN #{beginDateTime} and #{endDateTime}
                     OR m.end_time BETWEEN #{beginDateTime} and #{endDateTime}
+                )
+            </if>
+        </where>
+        order by m.begin_time desc
+    </select>
+    <select id="getMeterageCount" resultType="java.util.Map">
+        SELECT
+            count(m.id) meterageCount,
+            sum(m.total_time div 60) meterageDuration
+        FROM
+        meterage m
+        LEFT JOIN device d ON m.device_id = d.id
+        <where>
+            <if test="search != null">
+                (
+                d.`name` LIKE CONCAT('%', #{search}, '%')
+                OR d.intranet_ip LIKE CONCAT('%', #{search}, '%')
+                )
+            </if>
+            <if test="status != null">
+                AND (
+                m.status = #{status}
+                )
+            </if>
+            <if test="beginDateTime != null and endDateTime != null ">
+                AND (
+                m.begin_time BETWEEN #{beginDateTime} and #{endDateTime}
+                OR m.end_time BETWEEN #{beginDateTime} and #{endDateTime}
                 )
             </if>
         </where>

@@ -46,8 +46,7 @@ public class ControlServiceImpl implements IControlService {
         if (meterage != null){
             meterageService.endMeterage(meterage);
         }
-        Device device = deviceService.addDevice(deviceInfo);
-        connectLogService.addLog(device.getId(), null, 1 , 0, 0);
+        deviceService.addDevice(deviceInfo);
         return ResultInfo.success();
     }
 
@@ -88,6 +87,10 @@ public class ControlServiceImpl implements IControlService {
             return offlined(macAddr);
         }
         Device device = deviceService.getDeviceByMac(macAddr);
+        if (device.getStatus() != deviceStatus.getAgentStatus()){
+            device.setStatus(deviceStatus.getAgentStatus());
+            deviceService.updateById(device);
+        }
         //查看是否当前是否有计量
         Meterage meterage = meterageService.getUnCompleteMeterageById(device.getId());
         if (deviceStatus.getAppStatus() == 0){

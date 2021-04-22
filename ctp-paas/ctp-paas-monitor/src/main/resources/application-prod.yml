@@ -34,3 +34,8 @@ netty:
   port: 8899
   #客户端读超时秒数
   readTimeoutSeconds: 60
+
+ssl:
+  open: true
+  keyCertChainFile: ssl/yigougou.cn.pem
+  keyFile: ssl/yigougou.cn.key

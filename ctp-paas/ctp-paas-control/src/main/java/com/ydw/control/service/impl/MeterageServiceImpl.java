@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Map;
 
 /**
  * <p>
@@ -66,7 +67,7 @@ public class MeterageServiceImpl extends ServiceImpl<MeterageMapper, Meterage> i
     }
 
     @Override
-    public ResultInfo getMeterageList(String search, String beginDate, String endDate, Page buildPage) {
+    public ResultInfo getMeterageList(String search, Integer status, String beginDate, String endDate, Page buildPage) {
         LocalDateTime beginDateTime = null;
         LocalDateTime endDateTime = null;
         if (StringUtil.isNotBlank(beginDate) && StringUtil.isNotBlank(endDate)){
@@ -74,7 +75,20 @@ public class MeterageServiceImpl extends ServiceImpl<MeterageMapper, Meterage> i
             beginDateTime = LocalDate.parse(beginDate, dateTimeFormatter).atTime(LocalTime.MIN);
             endDateTime = LocalDate.parse(endDate, dateTimeFormatter).atTime(LocalTime.MAX);
         }
-        IPage page = meterageMapper.getMeterageList(search, beginDateTime, endDateTime, buildPage);
+        IPage page = meterageMapper.getMeterageList(search, status, beginDateTime, endDateTime, buildPage);
         return ResultInfo.success(page);
+    }
+
+    @Override
+    public ResultInfo getMeterageCount(String search, Integer status, String beginDate, String endDate) {
+        LocalDateTime beginDateTime = null;
+        LocalDateTime endDateTime = null;
+        if (StringUtil.isNotBlank(beginDate) && StringUtil.isNotBlank(endDate)){
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            beginDateTime = LocalDate.parse(beginDate, dateTimeFormatter).atTime(LocalTime.MIN);
+            endDateTime = LocalDate.parse(endDate, dateTimeFormatter).atTime(LocalTime.MAX);
+        }
+        Map<String, Integer> map = meterageMapper.getMeterageCount(search, status, beginDateTime, endDateTime);
+        return ResultInfo.success(map);
     }
 }
