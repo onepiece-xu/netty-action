@@ -54,6 +54,7 @@ public class MessageHelper {
     public void dispatchMessage(Channel channel, MessageHeader messageHeader, MessageContent messageContent){
         int commandId = messageHeader.getCommandId();
         logger.info("---------------------------------------------------------------------------------------");
+        logger.info("这是一条来着{}的客户端的ssl加密的消息！", channel.remoteAddress().toString());
         logger.info("channel-{}收到commandId为{}，msg为{}", channel.id().asLongText(), commandId, messageContent.getContent());
         switch (commandId){
             case Constants.COMMAND_SYSTEM_INIT:

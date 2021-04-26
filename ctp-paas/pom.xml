@@ -36,6 +36,7 @@
         <velocity.version>2.2</velocity.version>
         <disruptor.version>3.4.2</disruptor.version>
         <netty.version>4.1.59.Final</netty.version>
+        <netty-boringssl>2.0.26.Final</netty-boringssl>
     </properties>
 
     <dependencyManagement>
@@ -149,6 +150,12 @@
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
                 <version>${netty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-tcnative-boringssl-static</artifactId>
+                <version>${netty-boringssl}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
