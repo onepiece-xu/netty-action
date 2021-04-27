@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ydw.control.model.constant.Constants;
+import com.ydw.control.model.vo.AuthException;
 import com.ydw.control.model.vo.ResultInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -38,6 +39,9 @@ public class BaseController {
 	@ExceptionHandler(Exception.class)
 	public ResultInfo handle(Exception e) {
 		logger.error("【{}】处发生异常: 【{}】", e.getStackTrace()[0], e.getMessage());
+		if (e instanceof AuthException){
+			return new ResultInfo(401,"认证失败！", null);
+		}
 		return ResultInfo.fail("接口返回失败！");
 	}
 

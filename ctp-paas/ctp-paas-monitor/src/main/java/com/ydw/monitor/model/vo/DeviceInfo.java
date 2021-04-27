@@ -69,6 +69,10 @@ public class DeviceInfo extends DeviceStatus{
      */
     protected int deviceType = Constants.DEVICE_ARCH_X86;
 
+    /**
+     * 集群id（几乎等同代表一个网吧id）
+     */
+    protected int clusterId;
 
     public String getMacAddr() {
         return macAddr;
@@ -178,6 +182,18 @@ public class DeviceInfo extends DeviceStatus{
         this.deviceType = deviceType;
     }
 
+    public int getDiskSize() {
+        return diskSize;
+    }
+
+    public int getClusterId() {
+        return clusterId;
+    }
+
+    public void setClusterId(int clusterId) {
+        this.clusterId = clusterId;
+    }
+
     @Override
     public String toString() {
         return "DeviceInfo{" +
@@ -187,14 +203,15 @@ public class DeviceInfo extends DeviceStatus{
                 ", internetIP='" + internetIP + '\'' +
                 ", os='" + os + '\'' +
                 ", cpuModel='" + cpuModel + '\'' +
-                ", cpuNumber='" + cpuNumber + '\'' +
+                ", cpuNumber=" + cpuNumber +
                 ", memoryModel='" + memoryModel + '\'' +
-                ", memorySize='" + memorySize + '\'' +
+                ", memorySize=" + memorySize +
                 ", graphics='" + graphics + '\'' +
                 ", diskModel='" + diskModel + '\'' +
-                ", diskSize='" + diskSize + '\'' +
+                ", diskSize=" + diskSize +
                 ", networkCard='" + networkCard + '\'' +
                 ", deviceType=" + deviceType +
+                ", clusterId=" + clusterId +
                 '}';
     }
 }

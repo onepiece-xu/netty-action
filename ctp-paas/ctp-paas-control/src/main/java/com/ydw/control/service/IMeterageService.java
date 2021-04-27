@@ -5,6 +5,8 @@ import com.ydw.control.model.db.Meterage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ydw.control.model.vo.ResultInfo;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -23,7 +25,7 @@ public interface IMeterageService extends IService<Meterage> {
 
     Meterage beginMeterage(String deviceId, String appId, String userId);
 
-    ResultInfo getMeterageList(String search, Integer status, String beginDate, String endDate, Page buildPage);
+    ResultInfo getMeterageList(List<String> clusterIds, String search, Integer status, String beginDate, String endDate, Page buildPage);
 
-    ResultInfo getMeterageCount(String search, Integer status, String beginDate, String endDate);
+    ResultInfo getMeterageCount(List<String> clusterIds, String search, Integer status, String beginDate, String endDate);
 }

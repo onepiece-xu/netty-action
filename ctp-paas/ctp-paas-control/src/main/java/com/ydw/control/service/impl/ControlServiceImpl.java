@@ -1,6 +1,7 @@
 package com.ydw.control.service.impl;
 
 import com.ydw.control.model.db.App;
+import com.ydw.control.model.db.Cluster;
 import com.ydw.control.model.db.Device;
 import com.ydw.control.model.db.Meterage;
 import com.ydw.control.model.vo.DeviceInfo;
@@ -32,6 +33,9 @@ public class ControlServiceImpl implements IControlService {
     private IConnectLogService connectLogService;
 
     @Autowired
+    private IClusterService clusterService;
+
+    @Autowired
     private IAppService appService;
 
     /**
@@ -42,10 +46,6 @@ public class ControlServiceImpl implements IControlService {
     @Override
     public ResultInfo register(DeviceInfo deviceInfo) {
         logger.info("收到检测程序的注册上报！{}", deviceInfo);
-        Meterage meterage = meterageService.getUnCompleteMeterageByMac(deviceInfo.getMacAddr());
-        if (meterage != null){
-            meterageService.endMeterage(meterage);
-        }
         deviceService.addDevice(deviceInfo);
         return ResultInfo.success();
     }
@@ -91,7 +91,7 @@ public class ControlServiceImpl implements IControlService {
             device.setStatus(deviceStatus.getAgentStatus());
             deviceService.updateById(device);
         }
-        //查看是否当前是否有计量
+        //查看当前是否有计量
         Meterage meterage = meterageService.getUnCompleteMeterageById(device.getId());
         if (deviceStatus.getAppStatus() == 0){
             //如果有计量，则结束计量
@@ -100,15 +100,17 @@ public class ControlServiceImpl implements IControlService {
                 meterageService.endMeterage(meterage);
             }
             //如果app未启动，则启动app
-            App app = appService.list().get(0);
+            Cluster cluster = clusterService.getById(device.getClusterId());
+            App app = appService.getById(cluster.getAppId());
             logger.info("设备{}的开始打开app！", macAddr);
             appService.startApp(device, app);
         }else{
             //如果app已启动，但是没有计量则开始计量
             if (meterage == null){
                 logger.info("设备{}的app上线上报时无计量数据，开始计量", macAddr);
-                App app = appService.list().get(0);
-                meterage = meterageService.beginMeterage(device.getId(),app.getId(),"0");
+                Cluster cluster = clusterService.getById(device.getClusterId());
+                App app = appService.getById(cluster.getAppId());
+                meterage = meterageService.beginMeterage(device.getId(), app.getId(),"0");
             }
         }
         connectLogService.addLog(device.getId(), meterage == null ? null : meterage.getId(), deviceStatus.getAgentStatus() , deviceStatus.getAppStatus(),

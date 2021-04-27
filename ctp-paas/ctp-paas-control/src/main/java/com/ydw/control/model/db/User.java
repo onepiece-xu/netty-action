@@ -32,6 +32,11 @@ public class User implements Serializable {
      */
     private String token;
 
+    /**
+     * 所拥有的集群
+     */
+    private String clusterIds;
+
     public String getId() {
         return id;
     }
@@ -64,6 +69,14 @@ public class User implements Serializable {
         this.token = token;
     }
 
+    public String getClusterIds() {
+        return clusterIds;
+    }
+
+    public void setClusterIds(String clusterIds) {
+        this.clusterIds = clusterIds;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -71,6 +84,7 @@ public class User implements Serializable {
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", token='" + token + '\'' +
+                ", clusterIds='" + clusterIds + '\'' +
                 '}';
     }
 }

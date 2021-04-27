@@ -32,9 +32,6 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
     @Autowired
     private IMonitorService monitorService;
 
-    @Autowired
-    private DeviceMapper deviceMapper;
-
     /**
      * 重启
      *
@@ -132,9 +129,21 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
             device.setStatus(0);
             device.setType(param.getDeviceType());
             device.setCreateTime(LocalDateTime.now());
+            device.setClusterId(param.getClusterId());
             save(device);
         }else{
             logger.info("此设备{}已注册过！", param);
+            boolean changed = false;
+            if (!device.getInternetIp().equals(param.getInternetIP())){
+                changed = true;
+                device.setInternetIp(param.getInternetIP());
+            }
+            /**
+             * 其他属性可能变化
+             */
+            if (changed){
+                updateById(device);
+            }
         }
         return device;
     }
@@ -181,7 +190,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
      * @return
      */
     @Override
-    public ResultInfo getDeviceList(String search, Integer status,Page buildPage) {
+    public ResultInfo getDeviceList(List<String> clusterIds, String search, Integer status,Page buildPage) {
         QueryWrapper<Device> qw = new QueryWrapper<>();
         if (StringUtil.isNotBlank(search)){
             qw.and( w -> w.like("name", search).or().like("intranet_ip", search));
@@ -189,6 +198,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         if (status != null){
             qw.and(w -> w.eq("status", status));
         }
+        qw.in("cluster_id", clusterIds);
         qw.orderByDesc("create_time");
         Page page = page(buildPage, qw);
         return ResultInfo.success(page);

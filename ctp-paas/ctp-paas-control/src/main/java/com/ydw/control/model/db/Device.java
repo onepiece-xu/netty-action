@@ -84,6 +84,11 @@ public class Device implements Serializable {
     private String networkCard;
 
     /**
+     * 集群id（几乎等同代表一个网吧id）
+     */
+    protected int clusterId;
+
+    /**
      * 设备类型0：arm，1：pc
      */
     private int type;
@@ -234,6 +239,14 @@ public class Device implements Serializable {
         this.createTime = createTime;
     }
 
+    public int getClusterId() {
+        return clusterId;
+    }
+
+    public void setClusterId(int clusterId) {
+        this.clusterId = clusterId;
+    }
+
     @Override
     public String toString() {
         return "Device{" +
@@ -251,8 +264,10 @@ public class Device implements Serializable {
                 ", diskModel='" + diskModel + '\'' +
                 ", diskSize=" + diskSize +
                 ", networkCard='" + networkCard + '\'' +
+                ", clusterId=" + clusterId +
                 ", type=" + type +
                 ", status=" + status +
+                ", createTime=" + createTime +
                 '}';
     }
 }

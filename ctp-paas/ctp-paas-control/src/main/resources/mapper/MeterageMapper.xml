@@ -61,9 +61,13 @@
         FROM
             meterage m
         LEFT JOIN device d ON m.device_id = d.id
-        <where>
+        where
+            d.cluster_id in
+            <foreach collection="clusterIds" separator="," item="item" index="index" close=")" open="(">
+                #{item}
+            </foreach>
             <if test="search != null">
-                (
+                AND (
                     d.`name` LIKE CONCAT('%', #{search}, '%')
                     OR d.intranet_ip LIKE CONCAT('%', #{search}, '%')
                 )
@@ -79,7 +83,6 @@
                     OR m.end_time BETWEEN #{beginDateTime} and #{endDateTime}
                 )
             </if>
-        </where>
         order by m.begin_time desc
     </select>
     <select id="getMeterageCount" resultType="java.util.Map">
@@ -89,9 +92,13 @@
         FROM
         meterage m
         LEFT JOIN device d ON m.device_id = d.id
-        <where>
+        where
+            d.cluster_id in
+            <foreach collection="clusterIds" separator="," item="item" index="index" close=")" open="(">
+                #{item}
+            </foreach>
             <if test="search != null">
-                (
+                and (
                 d.`name` LIKE CONCAT('%', #{search}, '%')
                 OR d.intranet_ip LIKE CONCAT('%', #{search}, '%')
                 )
@@ -107,7 +114,6 @@
                 OR m.end_time BETWEEN #{beginDateTime} and #{endDateTime}
                 )
             </if>
-        </where>
     </select>
 
 </mapper>

@@ -6,6 +6,8 @@ import com.ydw.control.model.db.Device;
 import com.ydw.control.model.vo.DeviceInfo;
 import com.ydw.control.model.vo.ResultInfo;
 
+import java.util.List;
+
 public interface IDeviceService extends IService<Device> {
 
     /**
@@ -71,5 +73,5 @@ public interface IDeviceService extends IService<Device> {
      * @param buildPage
      * @return
      */
-    ResultInfo getDeviceList(String search, Integer status, Page buildPage);
+    ResultInfo getDeviceList(List<String> clusterIds, String search, Integer status, Page buildPage);
 }

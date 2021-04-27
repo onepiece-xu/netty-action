@@ -3,10 +3,13 @@ package com.ydw.control.controller;
 import com.ydw.control.model.vo.DeviceInfo;
 import com.ydw.control.model.vo.ResultInfo;
 import com.ydw.control.service.IDeviceService;
+import com.ydw.control.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 设备处理
@@ -21,6 +24,9 @@ public class DeviceController extends BaseController{
 
     @Autowired
     private IDeviceService deviceService;
+
+    @Autowired
+    private IUserService userService;
 
     //重启
     @PostMapping(value = "/reboot")
@@ -56,7 +62,8 @@ public class DeviceController extends BaseController{
     @GetMapping("/getDeviceList")
     public ResultInfo getDeviceList(@RequestParam(required = false) String search,
                                     @RequestParam(required = false) Integer status){
-        return deviceService.getDeviceList(search, status, super.buildPage());
+        List<String> clusterIds = userService.getClusterIds(super.getToken());
+        return deviceService.getDeviceList(clusterIds, search, status, super.buildPage());
     }
 }
 

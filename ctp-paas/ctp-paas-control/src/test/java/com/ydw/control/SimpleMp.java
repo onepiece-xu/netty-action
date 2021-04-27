@@ -22,7 +22,7 @@ public class SimpleMp {
         //指定生成的表名
 
 
-        String[] tableNames = new String[]{"user"};
+        String[] tableNames = new String[]{"cluster"};
 
 
         generateByTables(packageName, tableNames);

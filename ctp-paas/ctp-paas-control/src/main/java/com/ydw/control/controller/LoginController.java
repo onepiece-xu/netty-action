@@ -1,6 +1,5 @@
 package com.ydw.control.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.ydw.control.model.vo.ResultInfo;
 import com.ydw.control.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;

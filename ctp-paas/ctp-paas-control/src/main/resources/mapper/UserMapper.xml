@@ -8,6 +8,7 @@
         <result column="name" property="name" />
         <result column="password" property="password" />
         <result column="token" property="token" />
+        <result column="cluster_ids" property="clusterIds" />
     </resultMap>
 
 </mapper>

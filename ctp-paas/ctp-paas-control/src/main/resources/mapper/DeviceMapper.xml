@@ -5,6 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.ydw.control.model.db.Device">
         <id column="id" property="id" />
+        <result column="cluster_id" property="clusterId" />
         <result column="name" property="name" />
         <result column="mac_addr" property="macAddr" />
         <result column="intranet_ip" property="intranetIp" />

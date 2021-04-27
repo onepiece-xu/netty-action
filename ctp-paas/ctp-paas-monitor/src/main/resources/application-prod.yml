@@ -36,6 +36,6 @@ netty:
   readTimeoutSeconds: 60
 
 ssl:
-  open: true
+  open: false
   keyCertChainFile: ssl/yigougou.cn.pem
   keyFile: ssl/yigougou.cn.key
