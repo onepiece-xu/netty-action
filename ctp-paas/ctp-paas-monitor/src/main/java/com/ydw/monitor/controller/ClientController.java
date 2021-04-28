@@ -1,5 +1,6 @@
 package com.ydw.monitor.controller;
 
+import com.ydw.monitor.model.vo.DeviceInfo;
 import com.ydw.monitor.model.vo.ResultInfo;
 import com.ydw.monitor.service.IClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,7 +25,7 @@ public class ClientController {
 
     @GetMapping("/getAllClient")
     public ResultInfo getAllClient(){
-        Map<String, String> allClient = clientService.getAllClient();
+        List<DeviceInfo> allClient = clientService.getAllClient();
         return ResultInfo.success(allClient);
     }
 }

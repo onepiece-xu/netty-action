@@ -21,7 +21,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -145,7 +147,8 @@ public class ClientServiceImpl implements IClientService {
         Channel channel = channelMap.get(macAddr);
         if (channel == null || !channel.isActive()){
             logger.error("发送给{}指令{}时，channel未处于active状态！", macAddr,fullMessage.toString());
-            throw new RuntimeException("发送给指令时，channel未处于active状态！");
+            controlService.offlined(macAddr);
+            return false;
         }
         logger.info("发送给{}指令{}！", macAddr,fullMessage.toString());
         return sendCommand(channel, fullMessage);
@@ -241,11 +244,15 @@ public class ClientServiceImpl implements IClientService {
      * @return
      */
     @Override
-    public Map<String, String> getAllClient() {
-        HashMap<String, String> map = new HashMap<>();
+    public List<DeviceInfo> getAllClient() {
+        List<DeviceInfo> list = new ArrayList<>();
         for (Map.Entry<String, Channel> entry : channelMap.entrySet()) {
-            map.put(entry.getKey(),entry.getValue().id().asLongText());
+            Channel channel = entry.getValue();
+            DeviceInfo deviceInfo = getDeviceInfo(channel);
+            if (deviceInfo != null){
+                list.add(deviceInfo);
+            }
         }
-        return map;
+        return list;
     }
 }

@@ -6,6 +6,7 @@ import com.ydw.control.model.vo.AppInfo;
 import com.ydw.control.model.vo.ResultInfo;
 import com.ydw.control.model.vo.StreamInfo;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -39,4 +40,8 @@ public interface IMonitorService{
     //关流服务
     @PostMapping("/stream/stopStream")
     ResultInfo stopStream(@RequestBody StreamInfo streamInfo);
+
+    //关流服务
+    @GetMapping("/client/getAllClient")
+    ResultInfo getAllClient();
 }

@@ -5,6 +5,7 @@ import com.ydw.monitor.server.FullMessage;
 import com.ydw.monitor.server.MessageContent;
 import io.netty.channel.Channel;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -85,5 +86,5 @@ public interface IClientService {
      * 获取所有客户端
      * @return
      */
-    Map<String,String> getAllClient();
+    List<DeviceInfo> getAllClient();
 }
