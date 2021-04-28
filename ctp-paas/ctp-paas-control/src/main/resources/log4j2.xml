@@ -23,7 +23,7 @@
                 <TimeBasedTriggeringPolicy interval="1" modulate="false"/>
                 <SizeBasedTriggeringPolicy size="100 KB" />
             </Policies>
-            <DefaultRolloverStrategy max="2">
+            <DefaultRolloverStrategy max="20">
                 <Delete basePath="${LOG_HOME}/" maxDepth="1">
                     <IfFileName glob="*.zip" />
                     <!--7天-->
