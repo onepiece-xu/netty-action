@@ -6,6 +6,7 @@ import com.ydw.monitor.service.IClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -27,5 +28,11 @@ public class ClientController {
     public ResultInfo getAllClient(){
         List<DeviceInfo> allClient = clientService.getAllClient();
         return ResultInfo.success(allClient);
+    }
+
+    @GetMapping("/reportClient")
+    public ResultInfo reportClient(@RequestParam String macAddr){
+        clientService.reportClient(macAddr);
+        return ResultInfo.success();
     }
 }

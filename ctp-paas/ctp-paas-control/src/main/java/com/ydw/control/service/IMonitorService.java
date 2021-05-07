@@ -9,6 +9,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * 远程调用监控服务
@@ -44,4 +45,8 @@ public interface IMonitorService{
     //关流服务
     @GetMapping("/client/getAllClient")
     ResultInfo getAllClient();
+
+    //上报状态
+    @GetMapping("/client/reportClient")
+    void reportClient(@RequestParam(value = "macAddr") String macAddr);
 }

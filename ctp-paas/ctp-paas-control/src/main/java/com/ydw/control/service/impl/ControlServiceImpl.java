@@ -8,10 +8,15 @@ import com.ydw.control.model.vo.DeviceInfo;
 import com.ydw.control.model.vo.DeviceStatus;
 import com.ydw.control.model.vo.ResultInfo;
 import com.ydw.control.service.*;
+import com.ydw.control.utils.ThreadPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Future;
 
 /**
  * @author xulh
@@ -37,6 +42,8 @@ public class ControlServiceImpl implements IControlService {
 
     @Autowired
     private IAppService appService;
+
+    private Timer timer = new Timer();
 
     /**
      * 注册上报
@@ -99,11 +106,16 @@ public class ControlServiceImpl implements IControlService {
                 logger.info("设备{}的app离线上报时有计量数据{},结束计量", macAddr, meterage.getId());
                 meterageService.endMeterage(meterage);
             }
-            //如果app未启动，则启动app
-            Cluster cluster = clusterService.getById(device.getClusterId());
-            App app = appService.getById(cluster.getAppId());
-            logger.info("设备{}的开始打开app！", macAddr);
-            appService.startApp(device, app);
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    //如果app未启动，则启动app
+                    Cluster cluster = clusterService.getById(device.getClusterId());
+                    App app = appService.getById(cluster.getAppId());
+                    logger.info("设备{}的开始打开app！", macAddr);
+                    appService.startApp(device, app);
+                }
+            }, 30 * 1000);
         }else{
             //如果app已启动，但是没有计量则开始计量
             if (meterage == null){
@@ -117,4 +129,5 @@ public class ControlServiceImpl implements IControlService {
                 deviceStatus.getStreamStatus());
         return ResultInfo.success();
     }
+
 }

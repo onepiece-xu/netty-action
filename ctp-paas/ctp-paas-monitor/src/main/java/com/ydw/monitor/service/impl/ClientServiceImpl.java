@@ -233,6 +233,16 @@ public class ClientServiceImpl implements IClientService {
     }
 
     @Override
+    public DeviceInfo getDeviceInfo(String macAddr){
+        Channel channel = channelMap.get(macAddr);
+        if (channel == null){
+            return null;
+        }else{
+            return getDeviceInfo(channel);
+        }
+    }
+
+    @Override
     public void addDeviceInfo(Channel channel, DeviceInfo deviceInfo) {
         AttributeKey<DeviceInfo> deviceInfoKey = AttributeKey.valueOf(Constants.CHANNEL_DEVICE_KEY);
         channel.attr(deviceInfoKey).set(deviceInfo);
@@ -254,5 +264,19 @@ public class ClientServiceImpl implements IClientService {
             }
         }
         return list;
+    }
+
+    /**
+     * 上报此客户端的状态
+     *
+     * @param macAddr
+     */
+    @Override
+    public void reportClient(String macAddr) {
+        DeviceInfo deviceInfo = getDeviceInfo(macAddr);
+        if (deviceInfo != null){
+            DeviceStatus deviceStatus = new DeviceStatus(macAddr, deviceInfo.getAgentStatus(), deviceInfo.getAppStatus(), deviceInfo.getStreamStatus());
+            controlService.statusChanged(deviceStatus);
+        }
     }
 }

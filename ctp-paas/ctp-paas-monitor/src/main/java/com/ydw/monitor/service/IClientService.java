@@ -76,6 +76,13 @@ public interface IClientService {
     DeviceInfo getDeviceInfo(Channel channel);
 
     /**
+     * 获取客户端的设备信息
+     * @param macAddr
+     * @return
+     */
+    DeviceInfo getDeviceInfo(String macAddr);
+
+    /**
      * 添加客户端的设备信息
      * @param channel
      * @param deviceInfo
@@ -87,4 +94,10 @@ public interface IClientService {
      * @return
      */
     List<DeviceInfo> getAllClient();
+
+    /**
+     * 上报此客户端的状态
+     * @param macAddr
+     */
+    void reportClient(String macAddr);
 }

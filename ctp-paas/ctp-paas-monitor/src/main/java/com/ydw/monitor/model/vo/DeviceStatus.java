@@ -26,6 +26,16 @@ public class DeviceStatus implements Serializable {
      */
     protected int streamStatus = 0;
 
+    public DeviceStatus() {
+    }
+
+    public DeviceStatus(String macAddr, int agentStatus, int appStatus, int streamStatus) {
+        this.macAddr = macAddr;
+        this.agentStatus = agentStatus;
+        this.appStatus = appStatus;
+        this.streamStatus = streamStatus;
+    }
+
     public int getAgentStatus() {
         return agentStatus;
     }

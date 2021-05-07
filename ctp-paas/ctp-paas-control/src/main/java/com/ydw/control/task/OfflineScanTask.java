@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-//@Component
+@Component
 public class OfflineScanTask implements StartTask{
 
 	Logger logger = LoggerFactory.getLogger(getClass());
@@ -36,19 +36,21 @@ public class OfflineScanTask implements StartTask{
 	@Autowired
 	private IControlService controlService;
 
+	private Timer timer = new Timer();
+
 	@Override
 	public void run() {
-        new Timer().scheduleAtFixedRate(new TimerTask() {
+        timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 doScan();
             }
-        }, 10*1000, offlineScanPeriod*1000);
+        }, 10*1000, offlineScanPeriod * 1000);
 	}
 
 	public void doScan(){
         logger.info("--------------------扫描检查开始---------------------");
-        //在线的设备
+        //获取control在线的设备
         QueryWrapper<Device> qw = new QueryWrapper<>();
         qw.eq("status", 1);
         List<Device> devices = deviceService.list(qw);
@@ -74,6 +76,20 @@ public class OfflineScanTask implements StartTask{
             if (!active){
                 logger.info("在monitor检测程序中，此客户端{}已经不在线", macAddr);
                 controlService.offlined(macAddr);
+            }
+        }
+        for (DeviceInfo deviceInfo : list) {
+            String macAddr = deviceInfo.getMacAddr();
+            boolean active = false;
+            for (Device device : devices) {
+                if (device.getMacAddr().equals(macAddr)){
+                    active = true;
+                    break;
+                }
+            }
+            if (!active){
+                logger.info("在contorl检测程序中，此客户端{}已经不在线", macAddr);
+                monitorService.reportClient(macAddr);
             }
         }
         logger.info("--------------------扫描检查结束---------------------");
