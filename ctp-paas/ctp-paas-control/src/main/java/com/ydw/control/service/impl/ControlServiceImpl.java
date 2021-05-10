@@ -43,6 +43,9 @@ public class ControlServiceImpl implements IControlService {
     @Autowired
     private IAppService appService;
 
+    @Autowired
+    private IMonitorService monitorService;
+
     private Timer timer = new Timer();
 
     /**
@@ -106,16 +109,17 @@ public class ControlServiceImpl implements IControlService {
                 logger.info("设备{}的app离线上报时有计量数据{},结束计量", macAddr, meterage.getId());
                 meterageService.endMeterage(meterage);
             }
+            //如果app未启动，则启动app
+            Cluster cluster = clusterService.getById(device.getClusterId());
+            App app = appService.getById(cluster.getAppId());
+            logger.info("设备{}的开始打开app！", macAddr);
+            appService.startApp(device, app);
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    //如果app未启动，则启动app
-                    Cluster cluster = clusterService.getById(device.getClusterId());
-                    App app = appService.getById(cluster.getAppId());
-                    logger.info("设备{}的开始打开app！", macAddr);
-                    appService.startApp(device, app);
+                    monitorService.reportClient(device.getMacAddr());
                 }
-            }, 30 * 1000);
+            }, 10 * 1000);
         }else{
             //如果app已启动，但是没有计量则开始计量
             if (meterage == null){

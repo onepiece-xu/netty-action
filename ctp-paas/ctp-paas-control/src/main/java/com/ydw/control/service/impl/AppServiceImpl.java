@@ -25,7 +25,7 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements IAppS
     @Autowired
     private IMonitorService monitorService;
 
-    @Autowired()
+    @Autowired
     private IDeviceService deviceService;
 
     /**
@@ -35,7 +35,7 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements IAppS
      */
     @Override
     public ResultInfo startApp(String deviceId, String appId) {
-        App app = super.list().get(0);
+        App app = getById(appId);
         Device device = deviceService.getById(deviceId);
         return startApp(device, app);
     }
@@ -70,7 +70,7 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements IAppS
      */
     @Override
     public ResultInfo stopApp(String deviceId, String appId) {
-        App app = super.list().get(0);
+        App app = getById(appId);
         AppInfo appInfo = new AppInfo();
         appInfo.setAppId(app.getId());
         appInfo.setCloseShell(app.getCloseShell());
